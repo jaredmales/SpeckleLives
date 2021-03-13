@@ -1,0 +1,740 @@
+\documentclass[11pt,preprint]{aastex}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{mathrsfs}
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+
+\usepackage[]{graphicx, epstopdf}
+\graphicspath{{Figures/}}
+
+\usepackage{indentfirst}
+\usepackage{lscape}
+\usepackage{afterpage}
+\usepackage{rotating}
+\let\captionbox\undefined
+%\usepackage{caption}
+
+%\captionsetup{width=6.3in,font=footnotesize}
+\usepackage{wrapfig}
+\usepackage{multicol}
+\usepackage{textcomp}
+\newcommand{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
+
+
+\usepackage{multirow}
+
+\usepackage{xcolor}
+\usepackage{ulem}
+
+\usepackage{soul}
+
+\setlength{\textwidth}{6.5in}
+\setlength{\hoffset}{0in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+
+\setlength{\textheight}{9.in}
+\setlength{\voffset}{0in}
+\setlength{\topmargin}{0in}
+\setlength{\headsep}{0.25in}
+\setlength{\headheight}{0in}
+
+
+%Some handy-dandy commands
+%***Distance and Length***
+\newcommand{\meters}{\mbox{m}}
+\newcommand{\cm}{\mbox{cm}}
+\newcommand{\km}{\mbox{km}}
+\newcommand{\dpc}{d_{pc}}
+\newcommand{\au}{\mbox{AU}}
+\newcommand{\microns}{\mu\mbox{m}}
+\newcommand{\rsun}{R_{\sun}}
+\newcommand{\rjup}{R_J}
+\newcommand{\rearth}{R_{\earth}}
+
+%***Times***
+\newcommand{\hours}{\mbox{ hrs}}
+\newcommand{\seconds}{\mbox{ s}}
+\newcommand{\years}{\mbox{ yrs}}
+
+%**Mass**
+\newcommand{\kg}{\mbox{kg}}
+\newcommand{\msun}{M_{\sun}}
+\newcommand{\mearth}{M_{\earth}}
+\newcommand{\mjup}{M_J}
+
+
+
+\newcommand{\lambdasci}{\lambda_\mathrm{sci}}
+\newcommand{\lambdawfs}{\lambda_\mathrm{wfs}}
+\newcommand{\tautd}{\tau_\mathrm{td}}
+\newcommand{\tauwfs}{\tau_\mathrm{wfs}}
+\newcommand{\dopt}{d_\mathrm{opt}}
+\newcommand{\mmax}{m_\mathrm{max}}
+\newcommand{\nmax}{n_\mathrm{max}}
+\newcommand{\Ji}{\mathrm{Ji}}
+\newcommand{\pone}{ {\scalebox{0.6}{+1}}}
+\newcommand{\mone}{ {\scalebox{0.6}{-1}} }
+
+\newcommand{\karman}{K\'{a}rm\'{a}n }
+
+
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+
+
+
+% Alter some LaTeX defaults for better treatment of figures:
+    % See p.105 of "TeX Unbound" for suggested values.
+    % See pp. 199-200 of Lamport's "LaTeX" book for details.
+    %   General parameters, for ALL pages:
+    \renewcommand{\topfraction}{0.9}    % max fraction of floats at top
+    \renewcommand{\bottomfraction}{0.8} % max fraction of floats at bottom
+    %   Parameters for TEXT pages (not float pages):
+    \setcounter{topnumber}{2}
+    \setcounter{bottomnumber}{2}
+    \setcounter{totalnumber}{4}     % 2 may work better
+    \setcounter{dbltopnumber}{2}    % for 2-column pages
+    \renewcommand{\dbltopfraction}{0.9} % fit big float above 2-col. text
+    \renewcommand{\textfraction}{0.07}  % allow minimal text w. figs
+    %   Parameters for FLOAT pages (not text pages):
+    \renewcommand{\floatpagefraction}{0.7}      % require fuller float pages
+        % N.B.: floatpagefraction MUST be less than topfraction !!
+    \renewcommand{\dblfloatpagefraction}{0.7}   % require fuller float pages
+
+
+
+
+
+\begin{document}
+
+\title{The Mysterious Lives Of Speckles. I. Residual atmospheric speckle lifetimes behind AO-fed coronagraphs}
+\author{Jared Males}
+
+
+
+\begin{abstract}
+High contrast imaging observations are fundamentally limited by the spatially and temporally correlated noise source called speckles.  Suppression and removal of speckles are the key goals of wavefront control and adaptive optics (AO), coronagraphy, and a host of post-processing techniques.   The formation of speckles as spatial components of the instantaneous point-spread function (PSF) is well understood. However, while many empirical and simulation studies have been carried out, there has been relatively little effort focused on a theoretical understanding of the time-domain behavior of the intensity behind a coronagraphic wavefront control system.  Here we present a method for calculating the temporal power spectral density (PSD) of the intensity, and then show how the PSD can be used to calculate the statistical speckle lifetime.  Considering a frozen-flow turbulence model, we use these techniques to analyze the speckle lifetimes behind a MagAO-X-like AO system and extremely large telescope (ELT) scale systems.   We find that standard AO control shortens atmospheric speckle lifetime from $\sim$130 ms to $\sim$50 ms, and predictive control will further shorten the lifetime to $\sim$20 ms on MagAO-X.  Speckle-limited integration time is directly proportional to these lifetimes.  While the lifetime varies with telescope diameter, windspeed, and turbulence strength, there are no simple scaling laws among these quantities.   Finally, we describe how the intensity PSD can be used to explore the fundamental limits of post-processing in high contrast imaging.  These results motivate continued effort in the area of wavefront sensor and telemetry based reconstruction and speckle sensing for PSF subtraction, which promise to eliminate the long temporal correlations which currently limit high contrast imaging. Last updated \today.
+\end{abstract}
+
+\section{Introduction}
+
+Characterization of extrasolar planets with resolved imaging is limited by the halo of starlight scattered onto the image plane by optical aberrations.  In addition to the photon noise caused by this halo, the scattered light is coherent and produces ``speckles'', which can be thought of as copies of the instrument point spread function (PSF).  This adds structured noise, with both spatial and temporal correlations, which is almost always the limiting noise source in a coronagraphic observation.    Both in space and on the ground, imperfections within the telescope and instrument optics cause speckles.   On the Earth's surface, the aberrations include those imposed by turbulence in the Earth's atmosphere. 
+
+The index of refraction of air depends on temperature, and turbulence causes the air temperature to stochastically vary across the telescope aperture.  As the stellar wavefront traverses these regions of different index of refraction, parts of the wavefront travel different optical path lengths.  Due mainly to wind, the atmospheric temperature structure is constantly changing.  The technique of adaptive optics (AO) is used to correct the resulting time-variable optical aberrations in real time.  Even with so-called ``extreme'' AO systems (ExAO, Guyon), this correction is not perfect.  The AO-corrected wavefront, though significantly improved, still causes a halo of speckles significantly brighter than the instrumental speckles in a modern high performance coronagraph system using wavefront control.
+
+In order to analyze the capabilities of ground-based high-contrast imaging, we must understand the spatial and temporal evolution of the residual atmospheric speckles behind an ExAO coronagraph.  Speckle formation in the spatial-domain, as structures within the coronagraphic PSF, is well understood (xxxxx).  In the time-domain, we can imagine two ideal regimes for these structures.  In the first regime, the speckles are perfectly static.  Were this case, it would be a simple matter of measuring the PSF structure and then subtracting it from all images.  While this would still leave the photon noise from the scattered light, we could perfectly remove the spatially correlated noise.  In the second imaginary regime, the speckles are a perfect temporally white noise source: every image taken has a different speckle structure.  Similar to photon noise, it would now be a simple matter of taking enough images to average the speckles to a smooth halo.
+
+Here we are concerned with the actual temporal behavior of atmospheric speckles, which vary on short time-scales making standard PSF-subtraction essentially impossible, but exhibit non-negligible temporal correlations which cause them to average much more slowly than photon noise.  The statistical speckle lifetime, that is the time-scale which controls the averaging of speckle noise, is the quantity that sets the fundamental sensitivity limit of ground-based high-contrast imaging.
+
+There have been several definitions of speckle lifetime presented in the literature.  Early treatments of speckle dynamics were motivated by speckle interferometry, which relies on exposures short enough to ``freeze the atmosphere''.  The optimum exposure time is therefore dependent on the coherence time of the intensity in the focal plane.  A common definition for this coherence time was based on a $1/e$ reduction in the autocorrelation of the intensity, which was experimentally found to be on the order of a few ms \citep{1978ApOpt..17.3779S,1990JMOp...37.1247D}.    \citet{1982JOpt...13..263R} derived the following expression for the autocorrelation e-folding time in multi-layer Kolmogorov atmosphere:
+\begin{equation}
+\tau_{boil} = 0.36 \frac{r_0}{\sqrt{\sigma^2_\mathcal{V}}}
+\label{eqn:e-fold}
+\end{equation}
+called there the ``speckle boiling time'', where $r_0$ is Fried's parameter and $\sigma^2_\mathcal{V}$ is the variance with respect to height of the layer wind velocities $\mathcal{V}$  above the telescope.  At good astronomical sites such as MKO and LCO, values of $\tau_{boil}$ should range from $\sim$5 to $\sim$20 ms. \citet{1999PASP..111..587R} employed Equation (\ref{eqn:e-fold}) for the speckle lifetime and showed that speckles dominate photon noise by factors of 100 or more in high contrast imaging.
+
+The autocorrelation e-folding time is a somewhat arbitrary choice.  If we instead consider the evolution of the variance in the estimate of the mean given uncorrelated trials, we can define the speckle lifetime according to
+\begin{equation}
+\sigma_{mean}^2 = \frac{\sigma_o^2}{t/\tau}
+\label{eqn:varmean_def_intro}
+\end{equation}
+Here $\tau$ is given by the integral of the autocorrelation \citep{2006ApJ...637..541F}, and in this expression determines the number of uncorrelated realizations of the speckle pattern included in the mean.  Note that this assumes $t >> \tau$.  \citet{1986JOSAA...3.1001A} employed this definition, and argued for longer speckle lifetimes, replacing $0.36$ by $~$$1.14$ in Equation (\ref{eqn:e-fold}) based on arguments similar to \citet{1982JOpt...13..263R}.  Using AO corrected images, \citet{2006ApJ...637..541F} empirically found significantly longer values of $\tau$, giving an overall median of 175 ms at Lick observatory.  Of note, the results of \citet{2006ApJ...637..541F} hinted that inside the region of the image plane controlled by the AO system, the speckle lifetime was significantly shorter.
+
+\citet{2005SPIE.5903..170M} considered the time averaging of residual atmospheric speckles behind a coronagraph, directly analyzing the reduction in variance as a function of exposure time.  They argued that the speckle lifetime should not be affected by the properties of the AO system nor by the seeing parameter $r_0$, and instead should be determined by the wind-crossing time of a telescope with diameter $D$.  Based on a simulation, \citet{2005SPIE.5903..170M} found that 
+\begin{equation}
+\tau \approx 0.3 \frac{D}{\mathcal{V}}
+\end{equation}
+for use in Equation (\ref{eqn:varmean_def_intro}).  This result is quite different from the previous predictions, but coarsely in agreement with the experiments by \citet{2006ApJ...637..541F} (it is challenging to make more definitive experimental comparisons due to the uncertainty in atmospheric parameters).
+
+%Note for comparison that the Greenwood time-constant is
+%\begin{equation}
+%\tau_0 = 0.31 \frac{r_0}{\bar{v}}
+%\end{equation}
+%where $\bar{v}$ is the 5/3-moment weighted mean velocity (cf. Hardy sec 3.3.6).  $\tau_0$ usually ranges from $\sim$2 to $\sim$8 ms, and is a characteristic time-scale 
+%which sets the update rate requirement for AO systems.
+
+More recent experimental studies have used on-sky data with modern ExAO systems.  Using focal plane data from SPHERE, \citet{2016SPIE.9909E..4ZM} found evidence for speckle decorrelation on several time-scales, but were unable to identify an atmospheric component given the various instrument-induced time-scales and the relatively low cadence used. In a study using SCExAO at much higher frame-rates, \citet{2018PASP..130j4502G} analyzed the short time-scale evolution of the intensity using the variance of difference images (essentially a form of autocorrelation).  Here short time-scale (a few ms) speckle evolution was attributed to the atmosphere, and the authors argued that the AO system modulated the speckles on longer time-scales.  \citet{2017JATIS...3b5001S} present a study of speckle lifetimes at the LBT, where they found short-lived speckles attributed to the atmosphere and show some evidence for a difference in lifetime inside and outside the AO control radius.
+
+In the present study, we develop a semi-analytic method for predicting the residual speckle lifetime according to Equation (\ref{eqn:varmean_def_intro}).  This model explicitly accounts for closed-loop AO control, including advanced predictive control laws.  We verify the results of the model by comparison to end-to-end simulations of an ideal closed-loop AO system.  We here concentrate on the speckles due to the atmosphere under the frozen flow hypothesis, and do not consider more complicated turbulence evolution (e.g. boiling) nor do we consider instrumental speckles. We begin with a review of the theory of speckle noise in coronagraph images, followed by a derivation of the statistical speckle lifetime based on the power spectral density (PSD) of the intensity.  We then extend the methods of \citet{2018JATIS...4a9001M} to calculate the intensity PSD.  The model predictions for contrast and speckle lifetimes are compared, and we use the model to predict the behavior of specle lifetimes under various conditions.  Finally, we use the intensity PSDs to consider the benefits of telemetry-based post-processing.
+
+
+\section{Noise Dynamics in Coronagraphic Focal Planes}
+
+The quantity of interest in this analysis is the intensity in the focal plane as a function of time, $I(\vec{r}, t)$, where $\vec{r}$ is the position.  Useful units for this analysis are photons/sec/$(\lambda/D)^2$.  Following \citet{2007ApJ...669..642S} we consider three contributions to the intensity, such that
+\begin{equation}
+I(\vec{r},t) = I_{*}(t)\left[I_c(\vec{r},t) + I_{as}(\vec{r},t) + I_{qs}(\vec{r},t)\right]
+\end{equation}
+where $I_{*}$ is the peak intensity of the star's PSF without a coronagraph, itself a function of time due to Strehl ratio variation.  $I_c$ is the fractional contribution from residual diffraction from the coronagraph, as well as purely static aberrations.  $I_{as}$ is the fractional contribution from residual atmospheric speckles, and $I_{qs}$ is the fractional contribution from quasi-static (QS) speckles.  The instantaneous raw contrast is
+\begin{equation}
+C(\vec{r},t) = \frac{I(\vec{r},t)}{I_*(t)} = I_c(\vec{r},t) + I_{as}(\vec{r},t) + I_{qs}(\vec{r},t).
+\end{equation}
+
+The total variance, considering both speckles and and photon noise, is \citep{2007ApJ...669..642S} 
+\begin{equation}
+\sigma^2_{fp}  = I_* \Delta t [\underbrace{I_c + I_{as} + I_{qs}}_{\mbox{photon noise}} + I_* [ \underbrace{\tau_{as}\left(I_{as}^2 + 2[I_cI_{as} + I_{as}I_{qs}]  \right)}_{\mbox{atm. speckles}} +  \underbrace{\tau_{qs}\left( I_{qs}^2 + 2 I_c I_{qs}\right)}_{\mbox{QS speckles}}]]
+\label{eqn:variance}
+\end{equation}
+where $\tau_{as}$ is the lifetime of the residual atmospheric speckles, and $\tau_{qs}$ is the lifetime of the QS speckles. $\Delta t$ is the exposure time.  For simplicity we have suppressed the $\vec{r}$ dependence.   
+
+We have likewise dropped the $t$ dependence, but we note that this is somewhat subtle.  We could assume that $\Delta t$ is sufficiently short that the $I$s can be treated as constant, and then state the long exposure variance as a sum of the variance in these short exposures.  Alternatively, we can treat the $I$s in Equation (\ref{eqn:variance}) as mean values, and then $\sigma^2_{fp}$ is the mean of the variance.  For large total exposure time these will converge.
+
+Our present focus is on the atmospheric residual $I_{as}$.  From here on we will assume a perfect coronagraph and instrument, such that $I_c = 0$ and $I_{qs}$ = 0.  These (optimistic) conditions eliminate the speckle pinning \citep{2001ApJ...558L..71B} terms in Equation (\ref{eqn:variance}).  The variance is then
+\begin{equation}
+\sigma^2_{fp}  = I_* \Delta t \left(I_{as} + I_* \tau_{as} I_{as}^2 \right)
+\label{eqn:variance_as}
+\end{equation}
+If we attempt to observe a planet, with a contrast with respect to the star of $C_p$, then the peak signal-to-noise ratio of the planet detection will be
+\begin{equation}
+\mbox{S/N} = \frac{C_p \sqrt{I_* \Delta t}}{ \sqrt{I_{as} (1 + I_*I_{as} \tau_{as})}} 
+\end{equation}
+For argument's sake, assume a star having $I_* = 10^8$ photons/sec/$(\lambda/D)^2$ in the peak (roughly an 8th mag star on a 10 m telescope in the near-IR), and $I_{as} = 1\times10^{-4}$ (see \citet{2018JATIS...4a9001M}).  Next we (for now) assume the \citet{2005SPIE.5903..170M} crossing-time speckle lifetime for a 10 m telescope with 10 m/s wind, giving $\tau_{as}$ = 0.3 s.  We now have $I_*I_{as} \tau_{as} = 3000$.  We see that under such conditions  $I_*I_{as} \tau_{as} >> 1$, which would hold even for significantly smaller $\tau_{as}$.  This leads us to
+\begin{equation}
+\mbox{S/N} \approx \frac{C_p \sqrt{\Delta t}}{ I_{as} \sqrt{\tau_{as}}}. 
+\end{equation}
+Such an observation is therefore speckle noise limited, and the S/N improves with square-root of the number of realizations of the speckle pattern as $\sqrt{\Delta t/ \tau_{as}}$.  The ratio of the time to reach a given S/N when speckle limited, $\Delta t_{sl}$, to the time needed when photon noise limited, $\Delta t_{pn}$ is
+\begin{equation}
+\frac{\Delta t_{sl}}{\Delta t_{pn}} = I_*I_{as} \tau_{as} >> 1.
+\label{eqn:relexptime}
+\end{equation}
+
+Understanding the speckle lifetime is therefore crucial to understanding the limits of high contrast imaging.  To that end, we next show how to calculate the statistical correlation time in a stochastic process from its PSD, and then show how to apply it to post-coronagraph speckles.
+
+
+\subsection{Speckle Lifetime From A PSD}
+\label{sec:psd_lifetime}
+We will denote the temporal PSD as $\mathcal{T}(f)$ where $f$ is frequency.  We will restrict ourselves to one-sided PSDs, that is $f \ge 0$.  The PSD is normalized such that the variance of measurements from a process governed by the PSD is
+\begin{equation}
+\sigma_o^2 = \int_{0}^{f_s/2} \mathcal{T}(f) df.
+\label{eqn:process_var}
+\end{equation}
+where $f_s$ is the sampling frequency defined by the sampling rate $\Delta t$ according to $f_s = 1/\Delta t$.
+
+Through the Wiener-Khinchin theorem, the PSD is equivalent to the autocorrelation (they are a Fourier transform pair).  This means that the PSD describes how the measurements derived from the process are correlated. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=3.25in]{onLegPol.pdf}
+\caption{The orthonormal Legendre polynomials, which are used as a basis for analyzing the intensity time-series.  We show the first six. \label{fig:onlegpol}}
+\end{figure}
+
+Assume that we obtain a sample $I(t)$ of length $T$ consisting of measurements uniformly spaced by $\Delta t$.  For notational simplicity we define the time coordinate such that $-T/2 \le t \le T/2$, with no loss of generality.  Next, we express this time-series as a linear expansion using normalized Legendre polynomials as a signal processing basis:
+\begin{equation}
+P(\xi) = \sqrt{\frac{2n+1}{2}}\, \mathscr{P}_n(\xi)
+\label{eqn:basis}
+\end{equation}
+where $\mathscr{P}_n(\xi)$ are the Legendre polynomials defined in the usual manner \citep[cf.][]{Olver:2010:NHMF} on the domain $-1 \le \xi \le 1$. The first six of these functions are shown in Figure \ref{fig:onlegpol}.  With our normalization we have the orthogonality condition
+\begin{equation}
+\int_{-1}^{1}P_n(\xi)P_{n'}(\xi) d\xi = \delta_{nn'}
+\label{eqn:orthonormal}
+\end{equation}
+where $\delta_{nn'}$ is the Kronecker delta. 
+
+Now changing variables with
+\begin{equation}
+\xi = \frac{2}{T}t
+\end{equation}
+we have
+\begin{equation}
+I(t) = I\left(\frac{T}{2}\xi\right) = \sum_n a_n P_n(\xi)
+\label{eqn:basisexpansion}
+\end{equation}
+with coefficients
+\begin{equation}
+a_n = \int_{-1}^{1} I\left(\frac{T}{2}\xi\right)P_n(\xi) d\xi.
+\label{eqn:expansecoeff}
+\end{equation}
+The first orthonormal Legendre polynomial is $P_0(\xi) = 1/\sqrt{2}$, which means that $a_0/\sqrt{2}$ is the mean value of $I(t)$.  Thus the variance of the mean is given by
+\begin{equation}
+\sigma_\mathrm{mean}^2 = \frac{\left\langle \left|a_0\right|^2 \right\rangle}{2}
+\label{eqn:varmean_def}
+\end{equation}
+where $\langle \cdot \rangle$ denotes the ensemble average.  \citet{1976JOSA...66..207N} derived the coefficient covariances in the Zernike polynomial expansion of Kolmogorov phase screens.  We can apply the same procedure to our Legendre expansion of an arbitrary one dimensional PSD.  We give the step-by-step derivation in Appendix \ref{app:tau_psd}, and here give the result that:
+\begin{equation}
+\sigma_\mathrm{mean}^2 = \frac{\left\langle \left|a_0\right|^2 \right\rangle}{2} = \frac{1}{2T}  \int_0^{\infty} \frac{ J_{\frac{1}{2}}^2(2\pi \kappa)}{\kappa} \mathcal{T}\left( \frac{2}{T} \kappa \right) d\kappa
+\label{eqn:varmean}
+\end{equation}
+where $J_n$ denotes the cylindrical Bessel functions of the first kind.  This expression gives the variance of the mean in a process governed by $\mathcal{T}(f)$.
+
+Now consider the case of a white noise process, which has a constant PSD
+\begin{equation}
+\mathcal{T}(f) = \beta.
+\end{equation}
+Evaluating Equation (\ref{eqn:varmean}), the variance of the mean after a time $T$ is 
+\begin{equation}
+\sigma_\mathrm{mean}^2 = \frac{\beta}{2T}.
+\label{eqn:vm_wn}
+\end{equation}
+Now from Equation (\ref{eqn:process_var}) the total variance, which gives the variance of a single measurement, is
+\begin{equation}
+\sigma_o^2  = \frac{\beta}{2\Delta t}.
+\end{equation}
+Rearranging and substituting for $\beta$ in Equation (\ref{eqn:vm_wn}) yields
+\begin{equation}
+\sigma_\mathrm{mean}^2 =  \frac{\sigma_o^2 \Delta t}{T} = \frac{\sigma_o^2}{N}
+\end{equation}
+where $N = T/\Delta t$ is the number of measurements.  This is exactly the result we expect for the variance of the mean in a white noise process with variance $\sigma^2_o$. 
+
+To generalize this result we define $\tau$ as the correlation length of the process over the period $T$.  For an arbitrary PSD
+\begin{equation}
+\tau = \lim_{T\to\infty}\frac{ \displaystyle\int_0^{\infty} \frac{ J_{\frac{1}{2}}^2(2\pi \kappa)}{\kappa} \mathcal{T}\left( \frac{2}{T} \kappa \right) d\kappa}{ 2 \displaystyle\int_{0}^{f_s/2} \mathcal{T}(f) df}.
+\label{eqn:psd_lifetime}
+\end{equation}
+As long as $t >> \tau$, the variance of the mean decreases with time according to
+\begin{equation}
+\sigma_\mathrm{mean}^2 =  \frac{\sigma_o^2}{t/\tau}
+\end{equation}
+
+The lifetime is mainly set by the lowest frequency components of the PSD.  The limit in the numerator of Equation (\ref{eqn:psd_lifetime}) means that $f = \frac{2}{T}\kappa \rightarrow 0$, so we can approximate the lifetime as $\tau \approx \mathcal{T}(0)/(2\sigma_o^2)$.  That is, the lifetime is set by the proportion of power in the 0-frequency component of the PSD.  As we will show, both real-time AO control and post-processing act to reduce power in the low frequencies of the PSD, so we therefore expect these processes to reduce the speckle lifetime.
+
+Similar conclusions have been found through other approaches.  The statistical lifetime can be found from the integral of the autocovariance \citep{1986JOSAA...3.1001A}, which gives the 0-frequency component of the PSD (this is essentially how the derivation in Appendix \ref{app:tau_psd} proceeds).  The lifetimes so derived have the same time-averaging interpretation we use here \citep{2006ApJ...637..541F}.  \citet{2006OExpr..14.7499P} used the moving average filter to analyze the time evolution of variance in atmospheric speckles \citep[see also][]{2005SPIE.5903..170M}.  This likewise selects the lowest frequency components as integration time grows, and so produces equivalent results.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Speckle Intensity PSDs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Speckle Intensity PSDs}
+
+\subsection{Intensity as a Function of Time}
+Here we very briefly review the derivation of the intensity time-series from \citet{2018JATIS...4a9001M}, with the goal to introduce the notation needed for this analysis.  See that paper for a detailed treatment.
+
+% The position vector $\vec{q}$ in the pupil plane is defined by the unit vectors $(\hat{\mathpzc{u}},\hat{\mathpzc{v}})$, such that
+% \begin{equation}
+% \textstyle\vec{q} = u \hat{\mathpzc{u}} + v \hat{\mathpzc{v}} \\
+% \label{eqn:q_def}
+% \end{equation}
+% and the vector spatial-frequency is 
+% \begin{equation}
+% \vec{k} = k_u \hat{\mathpzc{u}} + k_v \hat{\mathpzc{v}}. 
+% \end{equation}
+% We discretize the wavefront control problem according to
+% \begin{equation}
+% \Delta k = \frac{1}{D}.
+% \end{equation}
+% where $D$ is the aperture diameter.  This yields
+% \begin{equation}
+% \textstyle\vec{k}_{mn} = \textstyle\frac{m}{D} \hat{\mathpzc{u}} + \textstyle\frac{n}{D} \hat{\mathpzc{v}}
+% \label{eqn:kq_def}
+% \end{equation}
+% where $m$ and $n$ are integer indices.
+
+We use a real-valued Fourier basis
+\begin{equation}
+M_{mn}^p(\vec{q}) = \cos(2\pi \vec{k}_{mn} \cdot \vec{q}) + p  \sin(2\pi \vec{k}_{mn} \cdot \vec{q})
+\label{eqn:modified_fourier}
+\end{equation}
+where $p=\pm 1$, $\vec{q}$ is the position vector in the pupil plance and the vector spatial-frequency is 
+\begin{equation}
+\textstyle\vec{k}_{mn} = \textstyle\frac{m}{D} \hat{\mathpzc{u}} + \textstyle\frac{n}{D} \hat{\mathpzc{v}}
+\label{eqn:kq_def}
+\end{equation}
+where $m$ and $n$ are integer indices, $D$ is the aperture diameter, and $(\hat{\mathpzc{u}},\hat{\mathpzc{v}})$ are unit vectors.  The modal basis described by Equation (\ref{eqn:modified_fourier}) is normalized, and has the advantage that on the unobscured circular aperture both $p$ modes at a given $mn$ have the same symmetric spatial and temporal PSD.  This is not true for pure sines and cosines.  We note that this basis is the one derived for the unobscured circular aperture in a 2D Lomb-Scargle analysis \citep{2020arXiv200110200S}, and, as such, phase-shifted Fourier bases with the same properties exist for more complicated apertures.  In this modal basis the phase in the pupil plane is
+\begin{equation}
+\Phi(\vec{q},t) = \frac{2\pi}{\lambda} \sum\limits_{mn} \left[ h_{mn}^{+}(t) M_{mn}^{+}(\vec{q}) + h_{mn}^{-}(t) M_{mn}^{-}(\vec{q})\right]
+\label{eqn:phi_expansion}
+\end{equation}
+where $h_{mn}^{+}$ and $h_{mn}^{-}$ are the coefficients of the modes in the same units as wavelength, and the phase $\Phi$ has units of radians.
+
+\citet{2018JATIS...4a9001M} then showed how the residual intensity due to the phase $\Phi$ behind a perfect coronagraph is described by
+\begin{equation}
+I_\Phi(\vec{r},t) \approx \left(\frac{2\pi}{\lambda}\right)^2 2 \sum_{mn} \left\{  \left[ (h_{mn}^{+})^2 + (h_{mn}^{-})^2 \right] \left[ \Ji^2(\pi D k_{mn}^+) +\Ji^2(\pi D k_{mn}^-)\right] + \mbox{cross-terms} \right\}
+\label{eqn:cross_terms}
+\end{equation}
+where $\Ji$ is the Jinc function
+\begin{equation}
+\Ji(x) = \frac{\mathrm{J}_1(x)}{x}.
+\end{equation}
+The cross-terms are a series of terms including products of $h_{mn}^+h_{mn}^-$ and $h_{mn}^ph_{m'n'}^{p'}$ ($mn \neq m'n'$) with $\Ji(x)\Ji(x')$. As long as the aperture truncation is accounted for when the long-exposure statistics are calculated,  these small cross-terms vanish and the long exposure intensity is 
+\begin{equation}
+\left< I_\Phi(\vec{r}_{mn}) \right> =  \left(\frac{2\pi}{\lambda}\right)^2\left< |h_{mn}|^2 \right> .
+\label{eqn:contrast_h2}
+\end{equation}
+where the discretized position 
+\begin{equation}
+\vec{r}_{mn} = \vec{k}_{mn} \lambda
+\end{equation}
+describes the relationship between the spatial-frequency in the pupil plane and projected-angular position in the focal plane.
+
+\subsection{The Intensity PSD}
+
+The quantity we seek is the temporal PSD of the intensity time-series described by Equation (\ref{eqn:cross_terms}).  This is the ensemble average of the modulus-squared of its Fourier transform:
+\begin{equation}
+\mathcal{T}_{I_{mn}}(f;\vec{r}) = \left\langle \left| \mathcal{F} \left\{ I_\Phi(\vec{r},t) \right\} \right|^2 \right\rangle.
+\end{equation}
+where $\mathcal{F}\{\cdot\}$ denotes the Fourier transform.
+
+The average Fourier transform of a time-series formed from the products of uncorrelated 0-mean processes will be 0, so we can employ the same logic as above and write
+\begin{equation}
+\mathcal{T}_{I_{mn}}(f;\vec{r}_{mn}) \approx \left(\frac{2\pi}{\lambda}\right)^2  \left\langle \mathcal{F}\left\{  (h_{mn}^{+})^2 + (h_{mn}^{-})^2  \right\} \right\rangle  .
+\label{eqn:psd_h2}
+\end{equation}
+We thus arrive at the need to determine the PSDs of $(h_{mn}^{+})^2$ and $(h_{mn}^{-})^2$.  Next we review how the PSDs of $h_{mn}^{+}$ and $h_{mn}^{-}$ can be calculated.
+
+\subsection{AO Corrected Post-Coronagraph PSDs}
+
+We express the PSDs of the $h_{mn}^p$ in closed loop ($\mathcal{T}_{\mathrm{cl},mn}(f;g)$) as functions of the open-loop PSD ($\mathcal{T}_{\mathrm{ol},mn}(f)$), the error transfer function (ETF), the measurement noise PSD ($\mathcal{T}_{\mathrm{ph},mn}(f)$), and the noise transfer function (NTF): 
+\begin{equation}
+\mathcal{T}_{\mathrm{cl},mn}(f;g) = \mathcal{T}_{\mathrm{ol},mn}(f) \left| \mbox{ETF}_{\mathrm{cl}}(f;g) \right|^2 + \mathcal{T}_{\mathrm{ph},mn}(f) \left| \mbox{NTF}_{\mathrm{cl}}(f;g) \right|^2 
+\label{eqn:cl_psd}
+\end{equation}
+where the control loop gain $g$ is optimized to minimize the residual variance in the closed-loop PSD \citep{1999aoa..book.....R_ch6,2016ApOpt..55..323P}. \citet{2018JATIS...4a9001M} derived open-loop PSDs of Fourier modes in frozen-flow turbulence.  In simplified form, the wavefront sensor (WFS) noise is given by
+\begin{equation}
+\sigma_{ph}^2 = \frac{\beta_{p,mn}^2}{F_\gamma \tau_\mathrm{wfs}}
+\label{eqn:photon_noise}
+\end{equation}
+where $\beta_{p,mn}$ is the WFS sensitivity to photon noise \citep{2005ApJ...629..592G}, $F_\gamma$ is the total photon rate (photons/sec) and $\tau_\mathrm{wfs}$ is the WFS integration time.  This gives a white-noise PSD
+\begin{equation}
+\mathcal{T}_{\mathrm{ph},mn}(f) = 2\frac{\beta_{p,mn}^2}{F_\gamma }.
+\end{equation}
+
+
+We consider ETFs and NTFs for control laws based on linear filters of the form
+\begin{equation}
+\widetilde{h} (t_i) = \sum_{j=1}^J a_j \widetilde{h}(t_{i-j}) + g\sum_{l=0}^L b_l \Delta h (t_{i-l})  
+\label{eqn:linfilt}
+\end{equation}
+Here the $\widetilde{h}_i$ are the estimates of the mode coefficient going back in time, and  the $\Delta h_i$ are the measurements of the closed-loop residual amplitude of the mode.  The filter combines the $J$ previous estimates and $L$ previous measurements to form the optimum estimate for the current time, which is then applied as a DM command.  
+
+With $J=1$, $a_1 = 1$, $L=0$, and $b_0 = 1$ Equation (\ref{eqn:linfilt}) represents the simple integrator (SI), the simplest control law.  \citet{2018JATIS...4a9001M} showed how adding more coefficients, using the well-known Linear Prediction (LP) technique, results in significant performance improvements in terms of post-coronagraph contrast.  Most, if not all, controllers can be cast in the form of Equation (\ref{eqn:linfilt}) \citep{2007JOSAA..24.2645P}. 
+
+
+
+% \begin{equation}
+% H_{wfs}(s) = H_{dm}(s) = \frac{1 - e^{-sT}}{sT}
+% \label{eqn:H_wfs}
+% \end{equation}
+% where $T = 1/f_s$, $f_s$ being the loop sampling frequency, and $s = i 2\pi f$
+% 
+% \begin{equation}
+% H_{\tau}(s) = e^{-s\tau}
+% \label{eqn:H_tau}
+% \end{equation}
+% 
+% \begin{equation}
+% H_{con}(z;g) = \frac{g \sum_{l=0}^L b_l z^{-l}}{1+\sum_{j=1}^J a_l z^{-j} }
+% \label{eqn:H_con}
+% \end{equation}
+% and we can map from the $z$-domain to the $s$-domain by the substitution $z \rightarrow e^{sT}$.
+% 
+% \begin{equation}
+% \mbox{ETF}_{ol}(s;g) = H_{wfs}(s) H_{con}(s;g) H_{\tau}(s) H_{dm}(s)
+% \label{eqn:etf_ol}
+% \end{equation}
+% From this it follows that the closed-loop ETF is
+% \begin{equation}
+% \mbox{ETF}_{cl}(s;g) = \left(1 + H_{wfs}(s) H_{con}(s;g) H_{\tau}(s) H_{dm}(s) \right)^{-1}
+% \end{equation}
+% The closed-loop noise transfer function (NTF) is
+% \begin{equation}
+% \mbox{NTF}_{cl}(s;g) = H_{dm}(s) H_{\tau}(s)  H_{con}(s;g)\:\mbox{ETF}_{cl}(s ; g)
+% \end{equation}
+
+\subsection{The Relationship Between $h_{mn}^+$ and $h_{mn}^-$ in Frozen Flow Turbulence}
+
+An alternate way to describe the time-evolution of the turbulent wavefront is (see \citet{2005ApJ...629..592G} and Appendix B of \citet{2018JATIS...4a9001M})
+\begin{equation}
+\Phi_{mn}(\vec{q},t) = \frac{2\pi}{\lambda} h_{mn}^\dagger(t) \cos \left( 2\pi \vec{k}_{mn} \cdot \vec{q} + \phi_{mn}(t) \right)
+\end{equation}
+These relate to the coefficients of the basis defined by Equation (\ref{eqn:modified_fourier}) as
+\begin{eqnarray}
+h_{mn}^+ &=& \frac{1}{2} h_{mn}^\dagger(t) \left[ \cos(\phi_{mn}(t)) + \sin(\phi_{mn}(t))\right] \\
+h_{mn}^- &=& \frac{1}{2} h_{mn}^\dagger(t) \left[ \cos(\phi_{mn}(t)) - \sin(\phi_{mn}(t))\right] \nonumber
+\end{eqnarray}
+Under the Taylor frozen flow hypothesis the amplitude $h_{mn}^\dagger$ of each spatial frequency is constant, which means that $h_{mn}^-(\phi_{mn}(t))$ = $h_{mn}^+(\phi_{mn}(t) + \frac{\pi}{2})$.  This phase shift yields
+\begin{equation}
+\mathcal{F}\left\{h_{mn}^-\right\} = \mathcal{F}\left\{h_{mn}^+\right\} e^{i\frac{\pi}{2}}
+\end{equation}
+which we employ next when calculating the PSDs of the intensity time-series.
+
+\subsection{A Recipe for Intensity PSDs}
+We are now ready to calculate $\mathcal{T}_{I_{mn}}(f)$.  Unfortunately, we have found no purely analytic way to calculate $\left| \mathcal{F}\left\{ h^2 \right\} \right|^2$ given only $\left| \mathcal{F}\left\{ h \right\} \right|^2$.  Instead, we employ a straightforward Monte Carlo procedure:
+\begin{enumerate}
+\item Generate an open-loop time-series for each $h_{mn}^p$ \label{step:olh}:
+\begin{enumerate}
+\item Generate a Gaussian white-noise time-series of the desired length
+\item Fourier transform the white-noise time-series
+\item Multiply the Fourier transform by the square-root of the open-loop PSD.  We now have $\mathcal{F}\left\{h_{mn}^p\right\}$ \citep[cf.][]{kasdin_falpha}.
+\item Apply the inverse Fourier transform to produce $h_{mn}^p(t)$, and then normalize to unit variance.
+\item Repeat for each mode.
+\end{enumerate}
+\item Correlate the modal time-series by multiplying the vector of coefficients at each time-step by the decomposition of the covariance matrix.  See \citet{2018JATIS...4a9001M} for a treatment of the covariance matrix calculation for the Fourier basis.
+\item For each spatial frequency $mn$, replace $h_{mn}^-(t)$ with the phase shifted $h_{mn}^+(t)$ as described above.
+\item Generate a WFS measurement noise time-series for each mode, $\eta_{mn}^+$ and $\eta_{mn}^-$, and Fourier transform them.  These are white-noise PSDs, with no phase relationship.
+\item Generate the closed-loop Fourier transforms for each mode \label{step:clh}
+\begin{eqnarray}
+\mathcal{F}\{h_{mn,cl}^+\} = \mathcal{F}\{h_{mn}^+\} \mathrm{ETF}(f) + \mathcal{F}\{\eta_{mn}^+\} \mathrm{NTF}(f) \\
+\mathcal{F}\{h_{mn,cl}^-\} = \mathcal{F}\{h_{mn}^-\} \mathrm{ETF}(f) + \mathcal{F}\{\eta_{mn}^-\} \mathrm{NTF}(f) \nonumber
+\end{eqnarray}
+\item Calculate the closed-loop modal coefficient time-series with the inverse Fourier transform.  We now have $h_{mn,cl}^+(t)$ and $h_{mn,cl}^-(t)$ 
+\item Now we can calculate the focal plane intensity as a function of time
+\begin{equation}
+I_{mn}(t) \approx \frac{2\pi}{\lambda}\left[ \left(h_{mn,cl}^+\right)^2 + \left(h_{mn,cl}^-\right)^2 \right] 
+\end{equation}
+\item Finally, we calculate $|\mathcal{F}\{I_{mn}(t)\}|^2$.  For best results this is done with a window function applied.
+\item Now the entire procedure is repeated N times, averaging the result to form the estimate of $\mathcal{T}_{I_{mn}}(f)$.
+\end{enumerate}
+
+In the following sections we compare the results of these calculations to end-to-end numerical simulations and analyze the results in terms of speckle lifetimes.
+
+\afterpage{\clearpage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Results
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Results}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Simulations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Simulations}
+
+We conducted a series of end-to-end numerical simulations of an idealized MagAO-X-like instrument to validate our calculations.  Our goal is not to develop a realistic hardware simulation, rather to ensure that the the calculations produce reasonable results. 
+
+We simulated a circular unobscured aperture of 6.5 m.   An idealized deformable mirror was used, which exactly produced commanded shapes as projection of modes.  The DM had 2400 degrees of freedom, corresponding to a 48x48 actuator illuminated pupil.  The wavefront sensor (WFS) worked by simply projecting modes onto the phase screen.  The basis set used for control was the modified Fourier basis (Equation (\ref{eqn:modified_fourier})) but orthornomalized with the stabilized Gramm-Schmidt procedure.  This was necessary for the loop to be stable under the LP controller.  Photon noise was added as Gaussian noise uniformly distributed across the WFS image.  The noise was scaled to correspond to the unmodulated pyramid sensor  \cite[$\beta_p = \sqrt{2}$,][]{2005ApJ...629..592G}.
+
+Wavefront propagation was monochromatic using the Fraunhofer approximation, and the science and sensing wavelength were both 800 nm.  The WFS was spatially filtered in the Fourier domain to minimize aliasing.  The perfect 1st order coronagraph was simulated.  The wavefront was spatially filtered before the coronagraph as well, to minimize Gibbs ringing on the dark hole edge due to the digitized pupil.
+
+The simulated system operated at 2000 Hz with a 1.5 frame delay in addition to the 1 frame total sample and hold.  To achieve the 1/2 frame, the WFS used the average turbulence between two time-steps.  Turbulence was generated in 7 layers as fixed oversized phase screens, translated according to the layer windspeed.   Turbulence parameters corresponded to the median LCO model used in \citet{2018JATIS...4a9001M}, where $r_0 = 0.16$ m, $L_0 = 25$ m, and layer averaged windspeed was 18.7 m/s.  
+
+The control laws, both SI and LP with 21 coefficients, were optimized on the open-loop PSDs measured by running the simulation with the control loop off.
+
+\subsection{Raw Contrast}
+Figure \ref{fig:contrast_2Dcomp} shows post-coronagraph contrast maps, comparing the results of calculations using \citet{2018JATIS...4a9001M} to the simulation outputs.  We show results for an $\infty$ mag guidestar to show the effects of the input turbulence alone, and for an $8$th mag guidestar.  The agreement is very good, though some small differences are visible in the LP (bottom row). Figure \ref{fig:contrast_radprof} shows the median radial profile for each of the maps in Figure \ref{fig:contrast_2Dcomp}.  
+
+\begin{figure}
+\hspace{-0.3in}
+\includegraphics[width=3.54in]{contrast0mag.pdf}
+\includegraphics[width=3.54in]{contrast8mag.pdf}
+\caption{Comparison of long-exposure raw contrast from control theory predictions and end-to-end simulation for a 6.5 m telescope. Left: without photon noise, considering the input turbulence only.  Right: with photon noise on an 8th mag star assuming the sensitivity of an unmodulated pyramid WFS. Note that the colorbar is adjusted to best show detail.  Agreement between the calculations and simulations is very good.\label{fig:contrast_2Dcomp}}
+\end{figure}
+
+\begin{figure}
+\hspace{-0.3in}
+\includegraphics[width=6.5in]{contrastRP.pdf}
+\caption{Median radial profiles of the contrast maps shown in Figure \ref{fig:contrast_2Dcomp}.  Left: without photon noise, considering the input turbulence only.  Right: with photon noise on an 8th mag star assuming the sensitivity of an unmodulated pyramid WFS. Agreement between the calculations and simulations is very good.\label{fig:contrast_radprof}}
+\end{figure}
+
+\subsection{Dynamics}
+Figure \ref{fig:opd_psdcomp} evaluates the dynamics of a single spatial frequency component  $m,n = 10,14$.  Note that this required re-fitting the Fourier coefficient after the simulations completed, since the control basis was different.
+
+In the top row, the black lines compare the calculated (dot-dashed) and simulated (solid) open-loop (OL) PSD.  The blue lines compare the output of the calculations to the simulations for the SI, and red lines show the LP.  The bottom row shows the ETF for each controller.  On the $\infty$ mag guidestar, the OL PSD shows excellent agreement at low frequencies, with a slight divergence in slope beginning at a $\sim$100 Hz. The SI likewise shows nearly perfect agreement, with the exception of a lower overshoot peak in the simulation.  The LP calculations are qualitatively a good match to the simulations, showing the same general shape, but the simulation shows better rejection at lower temporal frequencies.  This better low-frequency performance is true on the 8th mag star for both SI and LP.  
+
+The disagreements evident in the figure are likely due to the differences between the idealized continuous-time semi-analytic calculations and the discretized simulations.  Additionally, the use of an orthogonalized basis in the simulation can be expected to produce different noise rejection characteristics on the 8th mag star.   Overall the comparison of outputs presented here give us confidence that the semi-analytic model is valid, and can be used to analyze the closed-loop contrast performance and wavefront dynamics in a coronagraphic AO system.
+
+\begin{figure}
+\hspace{-0.3in}
+\includegraphics[width=6.5in]{psdcomp_10_14.pdf}
+\caption{Comparison of predicted and simulated PSDs for Fourier mode (m=10,n=14).  Due to the many subtle differences between the idealized semi-analytic model and the discretized end-to-end simulation, we do not expect perfect agreement.  See text for discussion.    \label{fig:opd_psdcomp}}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Speckle Lifetimes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Speckle Lifetimes}
+
+In Figure \ref{fig:sppsdcomp} we compare the intensity PSDs in the post-coronagraph focal plane.  In intensity, the agreement between calculations and simulations is even better than in phase.  There is a departure at high frequencies, where the calculations predict stronger peaks than occur in simulations. The agreement at low-frequencies, which are most important for determining speckle lifetimes, is very good.
+
+\begin{figure}
+\hspace{-0.3in}
+\includegraphics[width=6.5in]{spPsdComp_lp_10_14.pdf}
+\caption{Comparison of predicted and simulated PSDs for speckle intensity at position (m=10,n=14).  The agreement between the calculations and the simulations is very good at low frequencies, which determine the speckle lifetime.  At higher frequencies the calculations predict stronger peaks than occur in the simulations  \label{fig:sppsdcomp}}
+\end{figure}
+
+In Figure \ref{fig:binvarcomp} we show the evolution of the variance of the mean with time.  The lines show the result of applying Equation (\ref{eqn:varmean}). The points show the direct calculation of the variance in the simulations, as a function of increasing averaging length.  Importantly, the solid lines are in nearly perfect agreement with the points, showing the validity of Equation (\ref{eqn:varmean}).  The dot-dashed lines are slightly offset for the LP, which is due to the difference in simulated vs. predicted contrast (equivalent to the overall variance level), but the shape of the predicted evolution with time for both SI and LP controllers is in good agreement with the simulations.
+
+\begin{figure}
+\hspace{-0.3in}
+\includegraphics[width=6.5in]{binVarComp_lp_10_14.pdf}
+\caption{Comparison of predicted and simulated variance evolution for speckle intensity at position (m=10,n=14). \label{fig:binvarcomp}}
+\end{figure}
+
+Finnally in Figure \ref{fig:lifetime_2Dcomp} we present maps of speckle lifetime, and in Figure \ref{fig:lifetime_radprof} the median radial profile of speckle lifetime.  Overall these results show that Equation (\ref{eqn:psd_lifetime}) correctly describes the statistical speckle lifetime for a given intensity PSD, which in turn can be predicted by our semi-analytic model of an ExAO coronagraph.
+
+\begin{figure}
+\hspace{-0.3in}
+\includegraphics[width=3.54in]{lifetimes0mag.pdf}
+\includegraphics[width=3.54in]{lifetimes8mag.pdf}
+\caption{Comparison of control theory predictions for speckle lifetime to end-to-end simulation for a 6.5 m telescope.  Left: without photon noise, considering the input turbulence only.  Right: with photon noise on an 8th mag star assuming the sensitivity of an unmodulated pyramid WFS. Note that the colorbar is adjusted in each panel to best show detail. For the integrator agreement is very good.  For the predictor on the infinitely bright star, the agreement is good overall but the calculations over-predict speckle lifetimes long a diagonal assocated with the wind vectors.  \label{fig:lifetime_2Dcomp}}
+\end{figure}
+
+\begin{figure}
+\hspace{-0.3in}
+\includegraphics[width=6.5in]{lifetimesRP.pdf}
+\caption{Median radial profiles of the lifetime maps shown in Figure \ref{fig:lifetime_2Dcomp}.  Left: without photon noise, considering the input turbulence only.  Right: with photon noise on an 8th mag star assuming the sensitivity of an unmodulated pyramid WFS. The calculations are somewhat conservative at smaller separations in the bright star case.  \label{fig:lifetime_radprof}}
+\end{figure}
+
+\clearpage
+
+\subsection{Trends in Speckle Lifetime}
+\label{sec:trends}
+
+We now investigate the behavior of speckle lifetime over range of parameters.  The first comparison we make is between control laws.  Here we simply calculate a histogram of the lifetimes over the 48x48 $\lambda/D$ dark hole for the SI and LP controller.  We also apply the Monte Carlo procedure to the OL case.  The three resulting histograms are shown in Figure \ref{fig:slHist}.  It is clear that AO control shortens the speckle lifetime, and that predictive control further reduces speckle lifetime compared to the integrator.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=3.25in]{slHist.pdf}
+\caption{Distribution of speckle lifetimes in the dark-hole for open-loop (OL), simple integrator (SI), and linear predictor (LP) controllers. Each histogram contains 2400 measurements.  AO control shows a strong impact on speckle lifetime, with predictive control improving further over that of the simple integrator. 
+\label{fig:slHist}
+}
+\end{figure}
+
+Next, we analyze the change in speckle lifetime with telescope diameter, windspeed, and seeing.  Figure \ref{fig:scalings} shows the behavior of speckle lifetime at a constant absolute spatial frequency.  This means that for a given spatial frequency, the shape of the input PSD is the same regardless of $D$, but with an integrated variance different by a factor of $1/D^2$.  The speckles resulting from that spatial frequency occur at different projected separations according to $\lambda/D$.  
+
+On the 6.5 m aperture using the SI controller, windspeed has a strong effect, but on the larger ELT scale apertures wind has no significant effect.  We note, that given the range of plausible mean windspeeds, the ELTs are in a different regime of $\mathcal{V} < D$.  That is the crossing time $D/\mathcal{V}$ > 1 s.  Were a mean windspeed significantly higher than 30 m/s to occur, the speckle lifetimes on the ELT will be shorter.   
+
+For the LP controller, increasing windspeed tends to increase speckle lifetime.  This is a result of increasing power concentration in the PSD peaks at $\vec{\mathcal{V}} \cdot \vec{k}$ Hz, which causes the LP controller to optimize there at the expense of worse low-frequency rejection, thus causing the lifetime to increase.
+
+Diameter has a weak effect, with lifetimes dropping as $D$ increases.  When combined as ``crossing time'' $D/V$ there is some evidence for the $\tau \propto D/V$ relation predicted by \citet{2005SPIE.5903..170M} on smaller apertures, but this does not hold for larger telescopes and does not apply to predictive control.  
+
+Finally, our calculations predict that improving seeing ($r_0$ growing larger) lowers speckle lifetime.  This is because increasing $r_0$ lowers the overall power at each spatial frequency, which in turn causes the control system to perform better at lower temporal frequencies.  This better low-frequency rejection lowers the speckle lifetime.
+
+\begin{figure}
+\includegraphics[width=5.5in]{scalings.pdf}
+\caption{Changes in speckle lifetime with turbulence parameters.  Here absolute spatial frequency is held constant.  The $(m,n)=(10,14)$ mode on the 6.5 m telescope is compared to the $(m,n)=(60,84)$ mode on the 39 m aperture.  This means the input temporal PSD is identical in shape, though the integrated variance changes $\propto D^{-2}$.  Results shown here for turbulence only, without WFS noise. There are few general trends for $D$ and $V$. For the integrator controller there is evidence of a $D/V$ scaling as found by \citet{2005SPIE.5903..170M} up to around $D/V$$\sim$1, however this breaks down on larger apertures and higher winds, and is not evident in predictive control.  Improvement in $r_0$ (larger value, better seeing) shows a general reduction in speckle lifetime in all cases.
+\label{fig:scalings}
+}
+\end{figure}
+
+We next held relative spatial frequency constant with $D$, such that the resultant speckle occurs at the same relative projected separation in $\lambda/D$ units.  This means that the input temporal PSD has a different shape as well as different power.  While more difficult to interpret in terms of atmospheric parameters, this compares the performance of coronagraphic AO systems given the improvement in spatial resolution with $D$.
+
+Here, higher windspeed generally shortens speckle lifetime.  Under SI control, speckle lifetime increases with $D$, but shows little change under LP control.  As $D/V$, we see that there is a scaling up to $D/\mathcal{V} \sim 2$ for the SI, but this breaks down at longer crossing times (slower winds). For the LP controller speckle lifetime is essentially flat vs. $D/\mathcal{V}$.
+
+As in the absolute spatial frequency case, improving seeing lowers speckle lifetime in this relative spatial frequency comparison.
+
+\begin{figure}
+\includegraphics[width=5.5in]{scalings_rel.pdf}
+\caption{Changes in speckle lifetime with turbulence parameters.  Here relative spatial frequency is held constant.  The $(m,n)=(10,14)$ mode on the 6.5 m telescope is compared to the $(m,n)=(10,14)$ mode on the 39 m aperture.  This means the input temporal PSD is different in shape.  Results shown here for turbulence only, without WFS noise. In this comparison there is stronger evidence for the integrator controll showing a $D/V$ scaling as found by \citet{2005SPIE.5903..170M} up to around $D/V$$\sim$2. Predictive control shows little dependence on $D$ or $V$.  
+\label{fig:scalings_rel}
+}
+\end{figure}
+%\clearpage
+
+\section{The Potential of Reconstruction Post-Processing}
+In Section \ref{sec:psd_lifetime} we developed the expansion of the intensity time-series in terms of orthonormal Legendre polynomials $P_n$.  Suppose we have a technique for measuring the Legendre mode coefficients $a_n$, such as from WFS telemetry reconstruction.  We do not specify a specific algorithm, but assuming a suitable one exists we use it determine and then subtract the first $N$ modes from the intensity time-series 
+\begin{equation}
+I_{mn,pp}(t) = I_{mn}(t) - \sum_{n=0}^{n=N-1} a_n P_n. 
+\end{equation}
+The outcome will be fewer long-term correlations as the low order modes are sucessively subtracted, which will in turn lower the speckle lifetime.  We can describe this outcome statistically as a high-pass filter (HPF).  The PSD of a mode is
+\begin{equation}
+\mathcal{T}_n(f) = \mathcal{T}(f) \left|Q_n(f)\right|^2
+\end{equation}
+where ${Q}_n$ is the Fourier transform of $P_n$, which we derive in Appendix \ref{app:tau_psd}, giving
+\begin{equation}
+ \left|Q_n(f)\right|^2 = \left(\frac{2n+1}{2}\right)\frac{J_{n+\frac{1}{2}}^2(\pi T f)}{T f}.
+\end{equation}
+After fitting and subtracting N modes the speckle intensity PSD will be high-pass filtered with squared transfer function
+\begin{equation}
+\left| H_\mathrm{HPF}(f;N) \right| ^2 = 1 - \frac{1}{2}\sum_{n=0}^{n=N-1} (2n+1) \frac{J_{n+\frac{1}{2}}^2(\pi T f)}{T f}.
+\end{equation}
+We show examples of the transfer functions for this filter in Figure \ref{fig:leghpf}.  
+
+\begin{figure}
+\centering
+\includegraphics[width=4in]{hpf.pdf}
+\caption{The Legendre high pass filter rejection functions for 1, 10, and 100 modes. Fitting and subtracting legendre polynomials reduces low-frequency power, which lowers speckle lifetimes.\label{fig:leghpf}}
+\end{figure}
+
+% Now the measurement of the $a_n$ will have uncertainty due to measurement noise in the WFS.   In time $T$ there will be $Tf_s$ WFS measurements.  It then follows from Equations (\ref{eqn:expansecoeff}) and (\ref{eqn:photon_noise}) that the variance in the measurements of $a_n$ will be
+% \begin{equation}
+% \sigma_{a_n}^2 = \frac{4}{Tf_s} (\sigma_{ph}^2)^2.
+% \end{equation}
+% The reconstruction process may be noisy in excess of pure photon noise, say due to a variable calibration.  We model this by multiplicative factor $\gamma_{r} \ge 1$.  The PSD due to this measurement noise will be
+% \begin{equation}
+% \mathcal{T}_{a_n}(f;N,\gamma_r) = \gamma_r^2 \frac{2}{Tf_s} (\sigma_{ph}^2)^2 \sum_{n=0}^{n=N-1}\left(2n+1\right)\frac{J_{n+\frac{1}{2}}^2(\pi T f)}{T f}.
+% \end{equation}
+
+Now the fit to the data will have a fractional uncertainty $\gamma$, so the resulting speckle intensity PSD will be
+\begin{equation}
+\mathcal{T}_{I_{mn},pp}(f;N,\gamma) = \left( 1 -  \frac{(1-\gamma)^2}{2}\sum_{n=0}^{n=N-1}  (2n+1) \frac{J_{n+\frac{1}{2}}^2(\pi T f)}{T f}\right) \mathcal{T}_{I_{mn}}(f).
+\end{equation}
+
+\begin{figure}
+\centering
+\includegraphics[width=4in]{relsens.pdf}
+\caption{The relative sensitivity, in terms of exposure time, after subtracting the first N Legendre polynomials with uncertainty in the fit $\gamma$.  The horizontal line at 1 corresponds to the photon-noise limited exposure time.  Residual-atmospheric speckles increase the exposure time by a factor 55 compared to the photon-noise limit.   
+WFS telemetry-based PSF subtraction of just the first $\sim$5 low-order Legendre polynomials from the speckle time-series reduces the speckle lifetime, improving sensitivity dramatically. If better than $\sim$$1\%$ accuracy in reconstruction of these modes can be achieved, the speckle noise can be reduced to below the photon noise limit. \label{fig:legrelsens}}
+\end{figure}
+
+In Figure \ref{fig:legrelsens} we show the improvement in exposure time as defined by Equation (\ref{eqn:relexptime}), after fitting and removing the first $N$ Legendre polynomials, with an error of $\gamma$ on the fit.  In the figure, the horizontal line corresponds to the photon-noise limited exposure time on an 8th magnitude star.  If the the first $\sim$5 low-order Legendre polynomials can be determined from, say, WFS-based reconstruction, the reduction in speckle lifetime from removing the low-order temporal modes dramatically improves sensitivity by orders of magnitude.  If the modes are reconstructed to better than $\sim$1\% accuracy, the photon-noise limit can be reached.
+
+\clearpage
+\section{Discussion}
+For some time, long-lived quasi-static speckles have been recognized as the limiting noise source in contemporary high contrast imaging observations \citep[e.g.][]{2007ApJ...654..633H}.  Given their origin within the instrument, and comparatively long lifetimes \citep{2012A&A...541A.136M}, such speckles should be supressable using wavefront sensing and control strategies.  Recent progress in applying ``dark hole'' contrast optimization with focal plane WFS \citep{2020A&A...638A.117P} and various low-order coronagraphic WFS\&C strategites \citep[e.g.][]{2017PASP..129i5002S} show great promise in significantly reducing the impact of internal speckles.  Assuming active quasi-static speckle control becomes routine, the fundamental limit to sensitivity in ground-based high-contrast imaging is set by the Earth's atmosphere.  This limit is set by two components: uncorrelated photon noise and the spatially and temporally correlated speckle noise.  The temporal correlations of atmospheric speckles are, compared to quasi-static speckles, relatively short. This precludes conventional post-processing, but the lifetimes are long enough to significantly increase exposure times compared to the photon-noise.
+
+We have shown that the speckle lifetime in well-corrected post-coronagraph focal planes is an order of magnitude shorter than claimed in previous studies.  This result was obtained by developing a semi-analytic modeling framework, which allows us to calculate the intensity PSD at any point in the focal plane.  This powerful technique allows us to analyze the impact of control law choice, as well as to compare the influence of various telescope and atmosphere parameters on the speckle lifetime.  Of note, we find that the simple $D/\mathcal{V}$ ``crossing-time'' concept holds only for integrator control on contemporary $D\lesssim10$ m telescopes where $D/\mathcal{V} \lesssim 1$ second.  With predictive controllers and on the larger ELT-class apertures under development the crossing-time is not useful for predicting speckle lifetime.  We  note that the parameter study in Section (\ref{sec:trends}) would be prohibitively expensive in terms of time and computing resources if conducted using end-to-end simulations.  Such studies are enabled by the semi-analytic framework we have developed, beginning in \citep{2018JATIS...4a9001M} and extended to intensity dynamics in this work.
+
+The temporal decorrelation of speckle noise has long been recognized as one of the main aspects of PSF-subtraction post-processing \citep{2006ApJ...641..556M}, even though algorithms have typically been focused on the spatial domain.  Recently, various studies have begun to consider the time-domain in post-processing explicitly \citep{2021A&A...646A..24S}.  Knowledge of the intensity PSD allows for such algorithms to be analyzed eficiently.  We demonstrate this by considering the prospect of telemetry-based reconstruction of the speckle time-series.  Nominally such an algorithm would make use of the main WFS images, but other information sources such as accelerometers, low-order WFS telemetry, and environmental sensors could be used.  While we did not present a specific algorithm, we used the temporal intensity PSDs to predict the sensitivity gain possible.  If the first few low-order temporal modes, here described in terms of the Legendre polynomials, can be determined and subtracted from the intensity in the focal plane, orders of magnitude improvements in exposure time are possible.  The fact that only a few low-order temporal modes need to be reconstructed has the important consequence that any such post-processing algorithm does not need to accurately determine the intensity at every time interval, and does not need to be perfect.  Accuracy in the mean, slope, and other low-order terms of a few percent is all that is needed to make these gains.
+
+
+
+
+\section{Conclusion}
+The residual atmosphere after AO correction sets the fundamental limit for ground-based high-contrast imaging.  They key parameter for understanding this limit is the statistical speckle lifetime.  We have developed a semi-analytic method for calculating the speckle lifetime, and verified the model outputs using end-to-end simulations.  We have shown that the speckle lifetime is an order of magnitude shorter than previous studies have found, and analyzed the behavior of speckle lifetime with various telescope parameters.  The key development of the post-coronagraph intensity PSD allowed us to analyze post-processing as a time-domain filter and show that it is possible to achieve photon-noise limited sensitivity given a suitable reconstruction algorithm. In future work we will use this framework to analyze more realistic turbulence models, and extend these techniques to instrumental quasi-static aberrations.  
+
+\textbf{Acknowledgements:}
+
+\clearpage
+\appendix
+\section{The Correlation Length of a 1-D PSD}
+\label{app:tau_psd}
+
+In one of the seminal analyses in the development of AO, \citet{1976JOSA...66..207N} showed how to calculate the covariance of the Zernike polynomials in Kolmogorov turbulence, using only the spatial power spectral density of the optical phase. Here we adapt that analysis to one-dimensional PSDs of arbitrary form.  
+
+As above, we have a one-dimensional, one-sided ($f \ge 0$),  PSD $\mathcal{T}(f)$, where $f$ is normalized on $0 \leq f \leq f_s = 1/\Delta t$ according to Equation (\ref{eqn:process_var}).  We obtain a time-series $I(t)$ from the process goverened by $\mathcal{T}(f)$, which we expand in terms of normalized Legendre polynomials defined in Equation (\ref{eqn:basis}).  The orthogonality condition is given in Equation (\ref{eqn:orthonormal}).
+ 
+\subsection{Fourier Transform}
+
+Note the following transform pair\footnote{\url{http://dlmf.nist.gov/10.47}}
+\begin{eqnarray}
+\int_{-1}^{1} \mathscr{P}_n(x) e^{i2\pi k x} dx & = & 2 i^n j_n(2\pi k)\\
+2 i^n \int_{-\infty}^{\infty} j_n(2\pi k) e^{-i2\pi x k} dk &=& \mathscr{P}_n(x)
+\end{eqnarray}
+where the spherical Bessel functions of the first kind are given by
+\begin{equation}
+j_n(k) = \sqrt{\frac{\pi}{2k}}J_{n+\frac{1}{2}}(k)
+\end{equation}
+with $J_n$ denoting the Bessel functions of the first kind.  So we have the Fourier transforms of the $P_n(x)$ 
+\begin{equation}
+Q_n(k) = i^n \sqrt{\frac{2n+1}{2}}\, \frac{J_{n+\frac{1}{2}}(2\pi k)}{\sqrt{k}}
+\end{equation}
+Since we have normalized the Legendre polynomials, we have the useful result
+\begin{equation}
+\int_0^\infty \left| Q_n(k) \right|^2 dk = 1 \mbox{ for all }n.
+\end{equation}
+
+\subsection{Noll Analysis}
+
+The expansion of $I(t)$ in terms of the $P_n(\xi)$ is given by Equations (\ref{eqn:basisexpansion}) and (\ref{eqn:expansecoeff}).  This series expansion in terms of normalized Legendre polynomials is the 1-D analog of the expansion in Zernike polynomials used by \citet{1976JOSA...66..207N}.  Following that analysis we write the covariance between any two $P_n(\xi)$ as
+\begin{equation}
+<a_n^* a_{n'}> = \int \int P_n(\xi) C\left(\frac{T}{2}\xi, \frac{T}{2}\xi' \right) P_{n'}(\xi) d\xi d\xi' 
+\end{equation}
+where
+\begin{equation}
+C\left(\frac{T}{2}\xi, \frac{T}{2}\xi' \right) = \left<I\left(\frac{T}{2}\xi\right)I\left(\frac{T}{2}\xi'\right) \right>.
+\end{equation}
+Equivalently, in the Fourier domain we have
+\begin{equation}
+<a_n^* a_{n'}> = \int \int Q_n^*(\kappa) \Phi \left(\frac{2}{T}\kappa, \frac{2}{T}\kappa' \right) Q_{n'}(\kappa) d\kappa d\kappa' 
+\end{equation}
+where
+\begin{equation}
+\Phi \left(\frac{2}{T}\kappa, \frac{2}{T}\kappa' \right) =  \mathcal{T}\left(\frac{2}{T}\kappa \right) \mathcal{T}\left(\frac{2}{T} \kappa' \right) \delta(\kappa-\kappa')
+\end{equation}
+after the change of variables $f \rightarrow (2/T)\kappa$ in the PSD $\mathcal{T}(f)$.
+
+We now have
+\begin{equation}
+<a_n^* a_{n'}> = -i^n i^{n'} \frac{\sqrt{2n+1}\sqrt{2n'+1}}{T}   \int_{0}^{\infty} \frac{J_{n+\frac{1}{2}}(2\pi \kappa) J_{n'+\frac{1}{2}}(2\pi \kappa)}{\kappa} \mathcal{T}\left( \frac{2}{T} \kappa \right) d\kappa
+\end{equation}
+and for $n = n'$, the variance in a single Legendre mode coefficient over the sample length $T$ is
+\begin{equation}
+\left\langle \left|a_n\right|^2 \right\rangle = \frac{2n+1}{T}  \int_0^{\infty} \frac{ J_{n+\frac{1}{2}}^2(2\pi \kappa)}{\kappa} \mathcal{T}\left( \frac{2}{T} \kappa \right) d\kappa
+\label{eqn:varcoeff}
+\end{equation}
+
+\bibliographystyle{apj}
+\bibliography{specklelives}
+\end{document}
