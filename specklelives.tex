@@ -1,4 +1,4 @@
-\documentclass[11pt,preprint]{aastex}
+\documentclass[10pt,preprint]{aastex631}
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage{mathrsfs}
 \DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
@@ -6,37 +6,37 @@
 \usepackage[]{graphicx, epstopdf}
 \graphicspath{{Figures/}}
 
-\usepackage{indentfirst}
-\usepackage{lscape}
+%\usepackage{indentfirst}
+%\usepackage{lscape}
 \usepackage{afterpage}
-\usepackage{rotating}
+%\usepackage{rotating}
 \let\captionbox\undefined
 %\usepackage{caption}
 
 %\captionsetup{width=6.3in,font=footnotesize}
-\usepackage{wrapfig}
-\usepackage{multicol}
-\usepackage{textcomp}
+%\usepackage{wrapfig}
+%\usepackage{multicol}
+%\usepackage{textcomp}
 \newcommand{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
 
 
-\usepackage{multirow}
+%\usepackage{multirow}
 
-\usepackage{xcolor}
-\usepackage{ulem}
+%\usepackage{xcolor}
+%\usepackage{ulem}
 
-\usepackage{soul}
+%\usepackage{soul}
 
-\setlength{\textwidth}{6.5in}
-\setlength{\hoffset}{0in}
-\setlength{\oddsidemargin}{0in}
-\setlength{\evensidemargin}{0in}
+%\setlength{\textwidth}{6.5in}
+%\setlength{\hoffset}{0in}
+%\setlength{\oddsidemargin}{0in}
+%\setlength{\evensidemargin}{0in}
 
-\setlength{\textheight}{9.in}
-\setlength{\voffset}{0in}
-\setlength{\topmargin}{0in}
-\setlength{\headsep}{0.25in}
-\setlength{\headheight}{0in}
+%\setlength{\textheight}{9.in}
+%\setlength{\voffset}{0in}
+%\setlength{\topmargin}{0in}
+%\setlength{\headsep}{0.25in}
+%\setlength{\headheight}{0in}
 
 
 %Some handy-dandy commands
@@ -108,9 +108,21 @@
 \begin{document}
 
 \title{The Mysterious Lives Of Speckles. I. Residual atmospheric speckle lifetimes behind AO-fed coronagraphs}
-\author{Jared Males}
 
+\author{Jared R. Males}
+\affiliation{Steward Observatory, University of Arizona, Tucson, 933 N Cherry Ave, Tucson, AZ 85721, USA}
 
+\author{Michael P. Fitzgerald}
+\affiliation{Department of Physics \& Astronomy, University of California, Los Angeles, CA 90095, USA}
+
+\author{Ruslan Belikov}
+\affiliation{NASA-Ames Research Center, Moffett Blvd., Moffett Field, CA, USA}
+
+\author{Olivier Guyon}
+\affiliation{Astrobiology Center, National Institutes of Natural Sciences, 2-21-1 Osawa, Mitaka, Tokyo, JAPAN}
+\affiliation{Steward Observatory, University of Arizona, Tucson, 933 N Cherry Ave, Tucson, AZ 85721, USA}
+\affiliation{College of Optical Science, University of Arizona, 1630 E University Blvd, Tucson, AZ 85719, USA}
+\affiliation{National Astronomical Observatory of Japan, Subaru Telescope, National Institutes of Natural Sciences, Hilo, HI 96720, USA}
 
 \begin{abstract}
 High contrast imaging observations are fundamentally limited by the spatially and temporally correlated noise source called speckles.  Suppression and removal of speckles are the key goals of wavefront control and adaptive optics (AO), coronagraphy, and a host of post-processing techniques.   The formation of speckles as spatial components of the instantaneous point-spread function (PSF) is well understood. However, while many empirical and simulation studies have been carried out, there has been relatively little effort focused on a theoretical understanding of the time-domain behavior of the intensity behind a coronagraphic wavefront control system.  Here we present a method for calculating the temporal power spectral density (PSD) of the intensity, and then show how the PSD can be used to calculate the statistical speckle lifetime.  Considering a frozen-flow turbulence model, we use these techniques to analyze the speckle lifetimes behind a MagAO-X-like AO system and extremely large telescope (ELT) scale systems.   We find that standard AO control shortens atmospheric speckle lifetime from $\sim$130 ms to $\sim$50 ms, and predictive control will further shorten the lifetime to $\sim$20 ms on MagAO-X.  Speckle-limited integration time is directly proportional to these lifetimes.  While the lifetime varies with telescope diameter, windspeed, and turbulence strength, there are no simple scaling laws among these quantities.   Finally, we describe how the intensity PSD can be used to explore the fundamental limits of post-processing in high contrast imaging.  These results motivate continued effort in the area of wavefront sensor and telemetry based reconstruction and speckle sensing for PSF subtraction, which promise to eliminate the long temporal correlations which currently limit high contrast imaging. Last updated \today.
@@ -118,13 +130,13 @@ High contrast imaging observations are fundamentally limited by the spatially an
 
 \section{Introduction}
 
-Characterization of extrasolar planets with resolved imaging is limited by the halo of starlight scattered onto the image plane by optical aberrations.  In addition to the photon noise caused by this halo, the scattered light is coherent and produces ``speckles'', which can be thought of as copies of the instrument point spread function (PSF).  This adds structured noise, with both spatial and temporal correlations, which is almost always the limiting noise source in a coronagraphic observation.    Both in space and on the ground, imperfections within the telescope and instrument optics cause speckles.   On the Earth's surface, the aberrations include those imposed by turbulence in the Earth's atmosphere. 
+Characterization of extrasolar planets with resolved imaging is limited by the halo of starlight scattered onto the image plane by optical aberrations.  In addition to the photon noise caused by this halo, the scattered light is coherent and produces ``speckles'', which can be thought of as copies of the instrument point spread function (PSF) \citep{1995PASP..107..386M}.  This adds structured noise, with both spatial and temporal correlations, which is the limiting noise source in a coronagraphic observation.    Both in space and on the ground, imperfections within the telescope and instrument optics cause speckles.   For telescopes on the Earth's surface, the aberrations include those imposed by turbulence in the Earth's atmosphere. 
 
-The index of refraction of air depends on temperature, and turbulence causes the air temperature to stochastically vary across the telescope aperture.  As the stellar wavefront traverses these regions of different index of refraction, parts of the wavefront travel different optical path lengths.  Due mainly to wind, the atmospheric temperature structure is constantly changing.  The technique of adaptive optics (AO) is used to correct the resulting time-variable optical aberrations in real time.  Even with so-called ``extreme'' AO systems (ExAO, Guyon), this correction is not perfect.  The AO-corrected wavefront, though significantly improved, still causes a halo of speckles significantly brighter than the instrumental speckles in a modern high performance coronagraph system using wavefront control.
+The index of refraction of air depends on temperature, and turbulence causes the air temperature to stochastically vary across the telescope aperture.  As the stellar wavefront traverses these regions of different index of refraction, parts of the wavefront travel different optical path lengths.  Due mainly to wind, the atmospheric temperature structure is constantly changing.  The technique of adaptive optics (AO) is used to correct the resulting time-variable optical aberrations in real time.  Even with so-called ``extreme'' AO systems \citep[ExAO, ][]{2018ARAA..56..315G} this correction is not perfect.  The AO-corrected wavefront, though significantly improved, still causes a halo of speckles significantly brighter than the instrumental speckles in a modern high performance coronagraph system using wavefront control.
 
-In order to analyze the capabilities of ground-based high-contrast imaging, we must understand the spatial and temporal evolution of the residual atmospheric speckles behind an ExAO coronagraph.  Speckle formation in the spatial-domain, as structures within the coronagraphic PSF, is well understood (xxxxx).  In the time-domain, we can imagine two ideal regimes for these structures.  In the first regime, the speckles are perfectly static.  Were this case, it would be a simple matter of measuring the PSF structure and then subtracting it from all images.  While this would still leave the photon noise from the scattered light, we could perfectly remove the spatially correlated noise.  In the second imaginary regime, the speckles are a perfect temporally white noise source: every image taken has a different speckle structure.  Similar to photon noise, it would now be a simple matter of taking enough images to average the speckles to a smooth halo.
+In order to analyze the capabilities of ground-based high-contrast imaging, we must understand the spatial and temporal evolution of the residual atmospheric speckles behind an ExAO coronagraph.  Speckle formation in the spatial-domain, as structures within the coronagraphic PSF, is well understood \citep{2001ApJ...558L..71B,2003ApJ...596..702P,2007ApJ...669..642S}.  In the time-domain, we can imagine two ideal regimes for these structures.  In the first regime, the speckles are perfectly static.  Were this case, it would be a simple matter of measuring the PSF structure and then subtracting it from all images.  While this would still leave the photon noise from the scattered light, we could perfectly remove the spatially correlated noise.  In the second imaginary regime, the speckles are a perfect temporally white noise source: every image taken has a different speckle structure.  Similar to photon noise, it would now be a simple matter of taking enough images to average the speckles to a smooth halo.
 
-Here we are concerned with the actual temporal behavior of atmospheric speckles, which vary on short time-scales making standard PSF-subtraction essentially impossible, but exhibit non-negligible temporal correlations which cause them to average much more slowly than photon noise.  The statistical speckle lifetime, that is the time-scale which controls the averaging of speckle noise, is the quantity that sets the fundamental sensitivity limit of ground-based high-contrast imaging.
+In reality, the temporal behavior of atmospheric speckles falls between these regimes. These speckles vary on short time-scales making standard PSF-subtraction essentially impossible, but exhibit non-negligible temporal correlations which cause them to average much more slowly than photon noise.  The statistical speckle lifetime, that is the time-scale which controls the averaging of speckle noise, is the quantity that sets the fundamental sensitivity limit of ground-based high-contrast imaging.
 
 There have been several definitions of speckle lifetime presented in the literature.  Early treatments of speckle dynamics were motivated by speckle interferometry, which relies on exposures short enough to ``freeze the atmosphere''.  The optimum exposure time is therefore dependent on the coherence time of the intensity in the focal plane.  A common definition for this coherence time was based on a $1/e$ reduction in the autocorrelation of the intensity, which was experimentally found to be on the order of a few ms \citep{1978ApOpt..17.3779S,1990JMOp...37.1247D}.    \citet{1982JOpt...13..263R} derived the following expression for the autocorrelation e-folding time in multi-layer Kolmogorov atmosphere:
 \begin{equation}
@@ -153,7 +165,7 @@ for use in Equation (\ref{eqn:varmean_def_intro}).  This result is quite differe
 %where $\bar{v}$ is the 5/3-moment weighted mean velocity (cf. Hardy sec 3.3.6).  $\tau_0$ usually ranges from $\sim$2 to $\sim$8 ms, and is a characteristic time-scale 
 %which sets the update rate requirement for AO systems.
 
-More recent experimental studies have used on-sky data with modern ExAO systems.  Using focal plane data from SPHERE, \citet{2016SPIE.9909E..4ZM} found evidence for speckle decorrelation on several time-scales, but were unable to identify an atmospheric component given the various instrument-induced time-scales and the relatively low cadence used. In a study using SCExAO at much higher frame-rates, \citet{2018PASP..130j4502G} analyzed the short time-scale evolution of the intensity using the variance of difference images (essentially a form of autocorrelation).  Here short time-scale (a few ms) speckle evolution was attributed to the atmosphere, and the authors argued that the AO system modulated the speckles on longer time-scales.  \citet{2017JATIS...3b5001S} present a study of speckle lifetimes at the LBT, where they found short-lived speckles attributed to the atmosphere and show some evidence for a difference in lifetime inside and outside the AO control radius.
+More recent experimental studies have used on-sky data with modern ExAO systems.  Using focal plane data from SPHERE, \citet{2016SPIE.9909E..4ZM} found evidence for speckle decorrelation on several time-scales, but were unable to identify an atmospheric component given the various instrument-induced time-scales and the relatively low cadence used. In a study using SCExAO at much higher frame-rates, \citet{2018PASP..130j4502G} analyzed the evolution of the intensity using the variance of difference images (essentially a form of autocorrelation).  Here short time-scale (a few ms) speckle evolution was attributed to the atmosphere, and the authors argued that the AO system modulated the speckles on longer time-scales.  \citet{2017JATIS...3b5001S} present a study of speckle lifetimes at the LBT, where they found short-lived speckles attributed to the atmosphere and show some evidence for a difference in lifetime inside and outside the AO control radius.
 
 In the present study, we develop a semi-analytic method for predicting the residual speckle lifetime according to Equation (\ref{eqn:varmean_def_intro}).  This model explicitly accounts for closed-loop AO control, including advanced predictive control laws.  We verify the results of the model by comparison to end-to-end simulations of an ideal closed-loop AO system.  We here concentrate on the speckles due to the atmosphere under the frozen flow hypothesis, and do not consider more complicated turbulence evolution (e.g. boiling) nor do we consider instrumental speckles. We begin with a review of the theory of speckle noise in coronagraph images, followed by a derivation of the statistical speckle lifetime based on the power spectral density (PSD) of the intensity.  We then extend the methods of \citet{2018JATIS...4a9001M} to calculate the intensity PSD.  The model predictions for contrast and speckle lifetimes are compared, and we use the model to predict the behavior of specle lifetimes under various conditions.  Finally, we use the intensity PSDs to consider the benefits of telemetry-based post-processing.
 
@@ -662,7 +674,7 @@ In Figure \ref{fig:legrelsens} we show the improvement in exposure time as defin
 
 \clearpage
 \section{Discussion}
-For some time, long-lived quasi-static speckles have been recognized as the limiting noise source in contemporary high contrast imaging observations \citep[e.g.][]{2007ApJ...654..633H}.  Given their origin within the instrument, and comparatively long lifetimes \citep{2012A&A...541A.136M}, such speckles should be supressable using wavefront sensing and control strategies.  Recent progress in applying ``dark hole'' contrast optimization with focal plane WFS \citep{2020A&A...638A.117P} and various low-order coronagraphic WFS\&C strategites \citep[e.g.][]{2017PASP..129i5002S} show great promise in significantly reducing the impact of internal speckles.  Assuming active quasi-static speckle control becomes routine, the fundamental sensitivity limit in ground-based high-contrast imaging is set by the Earth's atmosphere.  This limit is set by two components: uncorrelated photon noise and the spatially and temporally correlated speckle noise.  The temporal correlations of atmospheric speckles are, compared to quasi-static speckles, relatively short. This precludes conventional post-processing, but the lifetimes are long enough to significantly increase exposure times compared to the photon-noise.
+For some time, long-lived quasi-static speckles have been recognized as the limiting noise source in contemporary high contrast imaging observations \citep[e.g.][]{2007ApJ...654..633H}.  Given their origin within the instrument, and comparatively long lifetimes \citep{2012A&A...541A.136M}, such speckles should be supressable using wavefront sensing and control (WFS\&C) strategies.  Recent progress in applying ``dark hole'' contrast optimization with focal plane WFS \citep{2020A&A...638A.117P} and various focal-plane \citep{2010A&A...509A..31G} and low-order coronagraphic WFS\&C strategites \citep[e.g.][]{2017PASP..129i5002S} show great promise in significantly reducing the impact of internal speckles.  Assuming active quasi-static speckle control becomes routine, the fundamental sensitivity limit in ground-based high-contrast imaging is set by the Earth's atmosphere.  This limit is set by two components: uncorrelated photon noise and the spatially and temporally correlated speckle noise.  The temporal correlations of atmospheric speckles are, compared to quasi-static speckles, relatively short. This precludes conventional post-processing, but the lifetimes are long enough to significantly increase exposure times compared to the photon-noise.
 
 We have shown that the speckle lifetime in well-corrected post-coronagraph focal planes is an order of magnitude shorter than claimed in previous studies.  This result was obtained by developing a semi-analytic modeling framework, which allows us to calculate the intensity PSD at any point in the focal plane.  This powerful technique allows us to analyze the impact of control law choice, as well as to compare the influence of various telescope and atmosphere parameters on the speckle lifetime.  Of note, we find that the simple $D/\mathcal{V}$ ``crossing-time'' concept holds only for integrator control on contemporary $D\lesssim10$ m telescopes where $D/\mathcal{V} \lesssim 1$ second.  With predictive controllers and on the larger ELT-class apertures under development the crossing-time is not useful for predicting speckle lifetime.  We  note that the parameter study in Section (\ref{sec:trends}) would be prohibitively expensive in terms of time and computing resources if conducted using end-to-end simulations.  Such studies are enabled by the semi-analytic framework we have developed, beginning in \citep{2018JATIS...4a9001M} and extended to intensity dynamics in this work.
 
