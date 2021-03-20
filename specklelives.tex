@@ -19,6 +19,10 @@
 %\usepackage{textcomp}
 \newcommand{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
 
+% custom commands for Olivier's comments
+\usepackage{ulem}
+\newcommand{\ogadd}[1]{\textcolor{orange}{#1}}
+\newcommand{\ogrmv}[1]{\textcolor{orange}{\sout{#1}}}
 
 %\usepackage{multirow}
 
@@ -129,21 +133,20 @@ High contrast imaging observations are fundamentally limited by the spatially an
 \end{abstract}
 
 \section{Introduction}
-
-Characterization of extrasolar planets with resolved imaging is limited by the halo of starlight scattered onto the image plane by optical aberrations.  In addition to the photon noise caused by this halo, the scattered light is coherent and produces ``speckles'', which can be thought of as copies of the instrument point spread function (PSF) \citep{1995PASP..107..386M}.  This adds structured noise, with both spatial and temporal correlations, which is the limiting noise source in a coronagraphic observation.    Both in space and on the ground, imperfections within the telescope and instrument optics cause speckles.   For telescopes on the Earth's surface, the aberrations include those imposed by turbulence in the Earth's atmosphere. 
+Characterization of extrasolar planets with resolved imaging is limited by the halo of starlight scattered onto the image plane by optical aberrations.  In addition to the photon noise caused by this halo, the scattered light is coherent and produces ``speckles'', which can be thought of as copies of the instrument point spread function (PSF) \citep{1995PASP..107..386M}.  This adds structured noise, with both spatial and temporal correlations, which is the limiting noise source in \ogrmv{a}\ogadd{long exposure} coronagraphic observation\ogadd{s}.    Both in space and on the ground, imperfections within the telescope and instrument optics cause speckles.   For \ogadd{ground-based} telescopes \ogrm{on the Earth's surface}, the aberrations \ogadd{also} include those imposed by \ogadd{atmospheric} turbulence \ogrmv{in the Earth's atmosphere}. 
 
 The index of refraction of air depends on temperature, and turbulence causes the air temperature to stochastically vary across the telescope aperture.  As the stellar wavefront traverses these regions of different index of refraction, parts of the wavefront travel different optical path lengths.  Due mainly to wind, the atmospheric temperature structure is constantly changing.  The technique of adaptive optics (AO) is used to correct the resulting time-variable optical aberrations in real time.  Even with so-called ``extreme'' AO systems \citep[ExAO, ][]{2018ARAA..56..315G} this correction is not perfect.  The AO-corrected wavefront, though significantly improved, still causes a halo of speckles significantly brighter than the instrumental speckles in a modern high performance coronagraph system using wavefront control.
 
-In order to analyze the capabilities of ground-based high-contrast imaging, we must understand the spatial and temporal evolution of the residual atmospheric speckles behind an ExAO coronagraph.  Speckle formation in the spatial-domain, as structures within the coronagraphic PSF, is well understood \citep{2001ApJ...558L..71B,2003ApJ...596..702P,2007ApJ...669..642S}.  In the time-domain, we can imagine two ideal regimes for these structures.  In the first regime, the speckles are perfectly static.  Were this case, it would be a simple matter of measuring the PSF structure and then subtracting it from all images.  While this would still leave the photon noise from the scattered light, we could perfectly remove the spatially correlated noise.  In the second imaginary regime, the speckles are a perfect temporally white noise source: every image taken has a different speckle structure.  Similar to photon noise, it would now be a simple matter of taking enough images to average the speckles to a smooth halo.
+In order to \ogrmv{analyze}\ogadd{estimate} the capabilities of ground-based high-contrast imaging, we must understand the spatial and temporal evolution of the residual atmospheric speckles behind an ExAO coronagraph.  Speckle formation in the spatial-domain, as structures within the coronagraphic PSF, is well understood \citep{2001ApJ...558L..71B,2003ApJ...596..702P,2007ApJ...669..642S}.  In the time-domain, we can imagine two ideal regimes for these structures.  In the first regime, the speckles are perfectly static.  Were this case, it would be a simple matter of measuring the PSF structure and then subtracting it from all images.  While this would still leave the photon noise from the scattered light, we could perfectly remove the spatially correlated noise.  In the second imaginary regime, the speckles are a perfect temporally white noise source: every image taken has a different speckle structure.  Similar to photon noise, it would now be a simple matter of taking enough images to average the speckles to a smooth halo.
 
-In reality, the temporal behavior of atmospheric speckles falls between these regimes. These speckles vary on short time-scales making standard PSF-subtraction essentially impossible, but exhibit non-negligible temporal correlations which cause them to average much more slowly than photon noise.  The statistical speckle lifetime, that is the time-scale which controls the averaging of speckle noise, is the quantity that sets the fundamental sensitivity limit of ground-based high-contrast imaging.
+In reality, the temporal behavior of atmospheric speckles falls between these regimes. These speckles vary on short time-scales \ogrmv{making standard PSF-subtraction essentially impossible}\ogadd{so they do are not removed by standard PSF subtraction}, but exhibit non-negligible temporal correlations which cause them to average much more slowly than photon noise.  The statistical speckle lifetime, that is the time-scale which controls the averaging of speckle noise, is the quantity that sets the fundamental sensitivity limit of ground-based high-contrast imaging.
 
 There have been several definitions of speckle lifetime presented in the literature.  Early treatments of speckle dynamics were motivated by speckle interferometry, which relies on exposures short enough to ``freeze the atmosphere''.  The optimum exposure time is therefore dependent on the coherence time of the intensity in the focal plane.  A common definition for this coherence time was based on a $1/e$ reduction in the autocorrelation of the intensity, which was experimentally found to be on the order of a few ms \citep{1978ApOpt..17.3779S,1990JMOp...37.1247D}.    \citet{1982JOpt...13..263R} derived the following expression for the autocorrelation e-folding time in multi-layer Kolmogorov atmosphere:
 \begin{equation}
 \tau_{boil} = 0.36 \frac{r_0}{\sqrt{\sigma^2_\mathcal{V}}}
 \label{eqn:e-fold}
 \end{equation}
-called there the ``speckle boiling time'', where $r_0$ is Fried's parameter and $\sigma^2_\mathcal{V}$ is the variance with respect to height of the layer wind velocities $\mathcal{V}$  above the telescope.  At good astronomical sites such as MKO and LCO, values of $\tau_{boil}$ should range from $\sim$5 to $\sim$20 ms. \citet{1999PASP..111..587R} employed Equation (\ref{eqn:e-fold}) for the speckle lifetime and showed that speckles dominate photon noise by factors of 100 or more in high contrast imaging.
+called there the ``speckle boiling time'', where $r_0$ is Fried's parameter and $\sigma^2_\mathcal{V}$ is the variance with respect to height of the layer wind velocities $\mathcal{V}$  above the telescope.  At good astronomical sites \ogrmv{such as MKO and LCO}, values of $\tau_{boil}$ should range from $\sim$5 to $\sim$20 ms. \citet{1999PASP..111..587R} employed Equation (\ref{eqn:e-fold}) for the speckle lifetime and showed that speckles dominate photon noise by factors of 100 or more in high contrast imaging.
 
 The autocorrelation e-folding time is a somewhat arbitrary choice.  If we instead consider the evolution of the variance in the estimate of the mean given uncorrelated trials, we can define the speckle lifetime according to
 \begin{equation}
@@ -199,7 +202,7 @@ If we attempt to observe a planet, with a contrast with respect to the star of $
 \begin{equation}
 \mbox{S/N} = \frac{C_p \sqrt{I_* \Delta t}}{ \sqrt{I_{as} (1 + I_*I_{as} \tau_{as})}} 
 \end{equation}
-For argument's sake, assume a star having $I_* = 10^8$ photons/sec/$(\lambda/D)^2$ in the peak (roughly an 8th mag star on a 10 m telescope in the near-IR), and $I_{as} = 1\times10^{-4}$ (see \citet{2018JATIS...4a9001M}).  Next we (for now) assume the \citet{2005SPIE.5903..170M} crossing-time speckle lifetime for a 10 m telescope with 10 m/s wind, giving $\tau_{as}$ = 0.3 s.  We now have $I_*I_{as} \tau_{as} = 3000$.  We see that under such conditions  $I_*I_{as} \tau_{as} >> 1$, which would hold even for significantly smaller $\tau_{as}$.  This leads us to
+For argument's sake, assume a star having $I_* = 10^8$ photon\ogrmv{s}/sec/$(\lambda/D)^2$ in the peak (roughly an 8th mag star on a 10 m telescope in the near-IR), and $I_{as} = 1\times10^{-4}$ (see \citet{2018JATIS...4a9001M}).  Next we (for now) assume the \citet{2005SPIE.5903..170M} crossing-time speckle lifetime for a 10 m telescope with 10 m/s wind, giving $\tau_{as}$ = 0.3 s.  We now have $I_*I_{as} \tau_{as} = 3000$.  We see that under such conditions  $I_*I_{as} \tau_{as} >> 1$, which would hold even for significantly smaller $\tau_{as}$.  This leads us to
 \begin{equation}
 \mbox{S/N} \approx \frac{C_p \sqrt{\Delta t}}{ I_{as} \sqrt{\tau_{as}}}. 
 \end{equation}
@@ -333,7 +336,7 @@ We use a real-valued Fourier basis
 M_{mn}^p(\vec{q}) = \cos(2\pi \vec{k}_{mn} \cdot \vec{q}) + p  \sin(2\pi \vec{k}_{mn} \cdot \vec{q})
 \label{eqn:modified_fourier}
 \end{equation}
-where $p=\pm 1$, $\vec{q}$ is the position vector in the pupil plance and the vector spatial-frequency is 
+where $p=\pm 1$, $\vec{q}$ is the position vector in the pupil \ogrmv{plance}\ogadd{plane} and the vector spatial-frequency is 
 \begin{equation}
 \textstyle\vec{k}_{mn} = \textstyle\frac{m}{D} \hat{\mathpzc{u}} + \textstyle\frac{n}{D} \hat{\mathpzc{v}}
 \label{eqn:kq_def}
@@ -730,9 +733,9 @@ Equivalently, in the Fourier domain we have
 \begin{equation}
 <a_n^* a_{n'}> = \int \int Q_n^*(\kappa) \Phi \left(\frac{2}{T}\kappa, \frac{2}{T}\kappa' \right) Q_{n'}(\kappa) d\kappa d\kappa' 
 \end{equation}
-where
+where for a wide-sense stationary process,
 \begin{equation}
-\Phi \left(\frac{2}{T}\kappa, \frac{2}{T}\kappa' \right) =  \mathcal{T}\left(\frac{2}{T}\kappa \right) \mathcal{T}\left(\frac{2}{T} \kappa' \right) \delta(\kappa-\kappa')
+\Phi \left(\frac{2}{T}\kappa, \frac{2}{T}\kappa' \right) =  \mathcal{T}\left(\frac{2}{T}\kappa \right) \delta(\kappa-\kappa')
 \end{equation}
 after the change of variables $f \rightarrow (2/T)\kappa$ in the PSD $\mathcal{T}(f)$.
 
