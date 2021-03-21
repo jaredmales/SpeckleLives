@@ -361,11 +361,16 @@ where $h_{mn}^{+}$ and $h_{mn}^{-}$ are the coefficients of the modes in the sam
 I_\Phi(\vec{r},t) \approx \left(\frac{2\pi}{\lambda}\right)^2 2 \sum_{mn} \left\{  \left[ (h_{mn}^{+})^2 + (h_{mn}^{-})^2 \right] \left[ \Ji^2(\pi D k_{mn}^+) +\Ji^2(\pi D k_{mn}^-)\right] + \mbox{cross-terms} \right\}
 \label{eqn:cross_terms}
 \end{equation}
-where $\Ji$ is the Jinc function
+at location $\vec{r} = r_u \hat{\mathpzc{u}} + r_v\hat{\mathpzc{v}}$. $\Ji$ is the Jinc function
 \begin{equation}
 \Ji(x) = \frac{\mathrm{J}_1(x)}{x}.
 \end{equation}
-The cross-terms are a series of terms including products of $h_{mn}^+h_{mn}^-$ and $h_{mn}^ph_{m'n'}^{p'}$ ($mn \neq m'n'$) with $\Ji(x)\Ji(x')$. As long as the aperture truncation is accounted for when the long-exposure statistics are calculated,  these small cross-terms vanish and the long exposure intensity is 
+\jrmadd{and the modified spatial frequencies are given by} 
+\begin{eqnarray}
+k_{mn}^+ &=& \sqrt{\left(\frac{r_u}{\lambda} + \frac{m}{d}\right) + \left(\frac{r_v}{\lambda} + \frac{n}{d}\right)} \\ 
+k_{mn}^- &=& \sqrt{\left(\frac{r_u}{\lambda} - \frac{m}{d}\right) + \left(\frac{r_v}{\lambda} - \frac{n}{d}\right)}. \nonumber
+\end{eqnarray}
+\jrmadd{Equation \ref{eqn:cross_terms} is equivalent to a convolution with the PSF, adding contributions from nearby speckles.}  The cross-terms are a series of terms including products of $h_{mn}^+h_{mn}^-$ and $h_{mn}^ph_{m'n'}^{p'}$ ($mn \neq m'n'$) with $\Ji(x)\Ji(x')$.  As long as the aperture truncation is accounted for when the long-exposure statistics of $h$ are calculated, the sum can be dropped and these small cross-terms vanish.  The long exposure intensity is 
 \begin{equation}
 \left< I_\Phi(\vec{r}_{mn}) \right> =  \left(\frac{2\pi}{\lambda}\right)^2\left< |h_{mn}|^2 \right> .
 \label{eqn:contrast_h2}
@@ -609,24 +614,24 @@ We now investigate the behavior of speckle lifetime over range of parameters.  T
 
 Next, we analyze the change in speckle lifetime with telescope diameter, windspeed, and seeing.  Figure \ref{fig:scalings} shows the behavior of speckle lifetime at a constant absolute spatial frequency.  This means that for a given spatial frequency, the shape of the input PSD is the same regardless of $D$, but with an integrated variance different by a factor of $1/D^2$.  The speckles resulting from that spatial frequency occur at different projected separations according to $\lambda/D$.  
 
-On the 6.5 m aperture using the SI controller, windspeed has a strong effect, but on the larger ELT scale apertures wind has no significant effect.  We note, that given the range of plausible mean windspeeds, the ELTs are in a different regime of $\mathcal{V} < D$.  That is the crossing time $D/\mathcal{V}$ > 1 s.  Were a mean windspeed significantly higher than 30 m/s to occur, the speckle lifetimes on the ELT will be shorter.   
+On the 6.5 m aperture using the SI controller, windspeed has a strong effect, but on the larger ELT scale apertures wind has no significant effect.  Given the range of plausible mean windspeeds, \jrmadd{the ELTs appear to be in a different regime}.  Were a mean windspeed significantly higher than 30 m/s to occur, the speckle lifetimes on the ELT would be shorter.   
 
 For the LP controller, increasing windspeed tends to increase speckle lifetime.  This is a result of increasing power concentration in the PSD peaks at $\vec{\mathcal{V}} \cdot \vec{k}$ Hz, which causes the LP controller to optimize there at the expense of worse low-frequency rejection, thus causing the lifetime to increase.
 
-Diameter has a weak effect, with lifetimes dropping as $D$ increases.  When combined as ``crossing time'' $D/V$ there is some evidence for the $\tau \propto D/V$ relation predicted by \citet{2005SPIE.5903..170M} on smaller apertures, but this does not hold for larger telescopes and does not apply to predictive control.  
+Diameter has a weak effect, with lifetimes dropping as $D$ increases.  When combined as ``crossing time'' $D/V$ there is some evidence for the $\tau \propto D/\mathcal{V}$ relation predicted by \citet{2005SPIE.5903..170M} on smaller apertures, but this does not hold for larger telescopes and does not apply to predictive control.  
 
 Finally, our calculations predict that improving seeing ($r_0$ growing larger) lowers speckle lifetime.  This is because increasing $r_0$ lowers the overall power at each spatial frequency, which in turn causes the control system to perform better at lower temporal frequencies.  This better low-frequency rejection lowers the speckle lifetime.
 
 \begin{figure}
 \includegraphics[width=5.5in]{scalings.pdf}
-\caption{Changes in speckle lifetime with turbulence parameters.  Here absolute spatial frequency is held constant.  The $(m,n)=(10,14)$ mode on the 6.5 m telescope is compared to the $(m,n)=(60,84)$ mode on the 39 m aperture.  This means the input temporal PSD is identical in shape, though the integrated variance changes $\propto D^{-2}$.  Results shown here for turbulence only, without WFS noise. There are few general trends for $D$ and $V$. For the integrator controller there is evidence of a $D/V$ scaling as found by \citet{2005SPIE.5903..170M} up to around $D/V$$\sim$1, however this breaks down on larger apertures and higher winds, and is not evident in predictive control.  Improvement in $r_0$ (larger value, better seeing) shows a general reduction in speckle lifetime in all cases.
+\caption{Changes in speckle lifetime with turbulence parameters.  Here absolute spatial frequency is held constant \jrmadd{for all aperture sizes}.  \jrmadd{For instance}, the $(m,n)=(10,14)$ mode on the 6.5 m telescope is compared to the $(m,n)=(60,84)$ mode on the 39 m aperture.   This means the input temporal PSD is identical in shape, though the integrated variance changes $\propto D^{-2}$.  Results shown here for turbulence only, without WFS noise. There are few general trends for $D$ and $V$. For the integrator controller there is evidence of a $D/V$ scaling as found by \citet{2005SPIE.5903..170M} up to around $D/V$$\sim$1, however this breaks down on larger apertures and higher winds, and is not evident in predictive control.  Improvement in $r_0$ (larger value, better seeing) shows a general reduction in speckle lifetime in all cases.
 \label{fig:scalings}
 }
 \end{figure}
 
 We next held relative spatial frequency constant with $D$, such that the resultant speckle occurs at the same relative projected separation in $\lambda/D$ units.  This means that the input temporal PSD has a different shape as well as different power.  While more difficult to interpret in terms of atmospheric parameters, this compares the performance of coronagraphic AO systems given the improvement in spatial resolution with $D$.
 
-Here, higher windspeed generally shortens speckle lifetime.  Under SI control, speckle lifetime increases with $D$, but shows little change under LP control.  As $D/V$, we see that there is a scaling up to $D/\mathcal{V} \sim 2$ for the SI, but this breaks down at longer crossing times (slower winds). For the LP controller speckle lifetime is essentially flat vs. $D/\mathcal{V}$.
+Here, higher windspeed generally shortens speckle lifetime.  Under SI control, speckle lifetime increases with $D$, but shows little change under LP control.  There is a scaling up to $D/\mathcal{V} \sim 2$ for the SI, but this breaks down at longer crossing times (slower winds). For the LP controller speckle lifetime is essentially flat vs. $D/\mathcal{V}$.
 
 As in the absolute spatial frequency case, improving seeing lowers speckle lifetime in this relative spatial frequency comparison.
 
