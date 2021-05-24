@@ -1,0 +1,178 @@
+This paper presents a semi-analytic method for calculating speckle lifetimes in idealized
+coronagraphic adaptive optics systems by way of calculating the intensity PSD in the
+coronagraphic focal plane. The predictions of this semi-analytic method are favorably compared
+with the results of an end-to-end simulation, demonstrating the validity of the less
+computationally intensive semi-analytic approach. The semi-analytic approach is used to
+analyze the dependence of the speckle lifetime on parameters such as the windspeed, crossing
+time, and seeing for telescopes of different aperture sizes, where complex relationships are
+identified (counter to previous work). This analysis of speckle lifetimes is motivated by the
+argument that the statistical lifetimes of atmospheric speckles limit the ultimate sensitivity of
+ground-based high contrast imaging systems.
+
+Overall, this paper presents useful tools that will undoubtedly be used for the planning of GSMT
+extreme-AO systems. However, one of the central arguments of the paper -- that reconstruction
+post-processing can lead to photon-noise limited sensitivity in the focal plane -- is weakened by
+a lack of discussion of how such a reconstruction could be accomplished. While it may be
+beyond the scope of this paper to present such a method in detail, the paper would be
+strengthened by some discussion of the prospects of making the relevant measurements.
+
+Response: We thank the referee for the careful review and insightful comments.  We have addressed each below.  In particular we have significantly expanded the discussion of post-processing to include an outline of a workable algorithm.
+
+----------------------------------------------
+Introduction
+
+"Coronagraphic wavefront control"
+Comment: This term should be defined.
+
+Response: We agree that this is not well defined, and have changed to "post-coronagraph".  
+
+In paragraph 2 we changed the introduction of FPWFS and LOWFS to read:
+".. various post-coronagraph focal-plane (e.g. Galicher et al. 2010) and low-order WFS&C strategies (e.g. Singh et al. 2017) show great promise in significantly reducing the impact of internal speckles."
+
+And in paragraph 3 the last sentence now reads:
+" The AO-corrected wavefront, though significantly improved, still causes a halo of speckles which will be
+significantly brighter than the instrumental speckles in a high performance coronagraph
+system employing the WFS&C strategies discussed above."
+
+
+----------------------------------------------
+
+Equation 2
+Comment: Please give explicit definitions of all terms in the equation.
+
+Response: The terms are now defined after the Equation:
+
+"...where $\tau$ is the noise lifetime, $\sigma_o^2$ is the variance of a single measurement, $\sigma_{mean}^2$ is the variance in the estimate of the mean after time $t$"
+
+----------------------------------------------
+
+
+"Using AO-corrected images, Fitzgerald & Graham (2006) empirically found significantly longer
+values of τ, giving an overall median of 175 ms at Lick observatory. Of note, the results of
+Fitzgerald & Graham (2006) hinted that inside the region of the image plane controlled by the
+AO system, the speckle lifetime was significantly shorter than outside."
+
+Comment: It would be helpful to give the value of tau both inside and outside the control region
+of the AO system here.
+
+Response: We have removed this statement as it is over-interpreting the results of the cited paper.
+
+----------------------------------------------
+
+Section 2
+"We could assume that delta_t is sufficiently short that the Is can be treated as a constant"
+Comment: Perhaps I_s is a typo here, and should refer to I_*.
+
+Response: This was meant to be a plural s and is confusing.  We have re-worded to:
+"We could assume that delta_t is sufficiently short that the each of the I terms can be treated as constant"
+
+and changed "Is" to "I terms" in the following sentence.
+
+----------------------------------------------
+
+Section 3
+"This means that the mean is constant and the autocorrelation does not depend on time"
+Comment: Given the variation of atmospheric turbulence, it would be helpful to justify this
+assumption, and more broadly to justify the wide-sense stationary process.
+
+Response: We have moved text from the Discussion to this point, adding "In this context, WSS essentially implies that the atmosphere parameters, namely $r_0$ and the layer $\vec{\mathcal{V}}$, are constant.  This is of course not strictly true, but can be expected to be approximately true over short periods of time, by which we mean at least long enough to estimate a PSD.  WSS also implies that AO control is stable, and we expect the control system to damp changes, keeping the output speckle formation process within a more or less well-defined range."
+
+The relevant text in the discussion section now reads: "A key assumption underlying the mathematics of the PSD analysis is that the speckle intensity is wide-sense stationary (WSS), which means that the mean is constant and that the autocorrelation does not depend on time.  As discussed above, this assumption implies that $r_0$ and the layer $\vec{\mathcal{V}}$ are constant such that the statistics of the AO control output process are WSS.  In the simulations presented these assumptions are true by construction, and so the comparison to our semi-analytic predictions is valid.  On-sky input turbulence parameters will vary, and so the process will not be WSS over long periods.  However, these variations occur over finite times.  For our results to be useful the time-scales of these variations would need to be long enough to estimate a PSD which meaningfully captures the intensity dynamics.   What this ultimately means is that we must consider the speckle lifetime as itself a time-variable parameter, but we can expect there to be a representative value over an observation that characterizes long exposure sensitivity."
+
+----------------------------------------------
+
+Section 5
+"The perfect 1st order coronagraph was simulated."
+Comment: Please provide a citation here.
+
+Response: We ave droped "1st order" and added a citation.  Te sentence now reads:
+"The perfect coronagraph was simulated (Cavarroc et al. 2006)"
+
+----------------------------------------------
+Figure 7 caption "Note that the color bar is adjusted in each panel to best show detail."
+Comment: Is the colorbar different for all eight panels, or is it the same for each pair of images
+(e.g. is the colorbar for the calculated and simulated simple integrator panels the same)? If all
+eight panels have different colorbars, they should be included in the figure.
+
+Response: in both Figures 2 and 7 we have changed the text to read "The same colorbar is used for both calculated and simulated within a combination of controller and guidestar, but is adjusted to best show detail for each combination"
+----------------------------------------------
+
+Figure 8
+Comment: Why do the calculations under-predict the speckle lifetimes at separations greater
+than 10L/D for the infinitely bright, LP case?
+
+Response: To address this, we have added additional text at the end of Section 5.4:
+"The calculated and simulated lifetimes agree throughout most of the control region.  The noteworthy exception occurs in the LP roughly along a diagonal.  At wider separations the simulations predict lifetimes $\sim 50\%$ higher in a wedged shape region.  As with the differences in the phase dynamics discussed above, we attribute this to differences between the orthogonalized modal basis used in the simulations and the Fourier modes used in the calculations, and the resultant changes in the output of the controller coefficients and gain optimization."
+
+And to the caption of Figure 8 we added: "The large difference in median lifetime between simulation and calculation for the LP is due to the wedge shaped region where the simulation predicts higher lifetimes (see Figure \ref{fig:lifetime_2Dcomp}.  See text for discussion."
+
+----------------------------------------------
+Section 6
+"The LP controller shows much weaker dependence on the same parameters"
+
+Comment: I find it particularly striking that the speckle lifetimes with the LP controller have a
+much weaker dependence on the telescope diameter than the SI controller. Further discussion
+of this point would be useful.
+
+Response: We expanded discussion of this.  The text now reads: 
+"The LP controller shows much weaker dependence on the same parameters.  Except at the lowest wind speeds, the speckle lifetime is $\sim$$20$ ms on the 5th-magnitude guide star with little variation.  Here the photon noise is well below the input turbulence PSD, and the LP can effectively whiten the disturbance to the photon noise floor.  The result is that the output PSD has the same shape, giving the same speckle lifetime regardless of the parameters.  On the 8th-magnitude star photon noise makes predictive control less effective, causing some variation with the parameters. There is a proportional scaling up to $D/\mathcal{V}$$\sim$$3$."
+
+----------------------------------------------
+
+"Interestingly, on the 8th-mag guide star and for the largest apertures the LP controller shows
+the opposite trend. The power in each Fourier mode is proportional to 1/D2. Projected actuator
+spacing was held constant, so the photon noise per mode is constant in these comparisons.
+Furthermore, given the highest jet stream driven wind speeds we can expect, the GSMTs will
+normally operate in the regime of D/V > 1. Thus the GSMTs are operating in a different regime
+compared to the 6.5 m, and the LP controller produces different dynamics when photon noise
+becomes important on the 8th-mag star."
+
+Comment: The source of this different behavior with r0 is still unclear to me after reading this
+discussion. The authors have mentioned several similarities and differences between the
+different aperture cases, but the takeaway point regarding the r0 trends is not entirely clear.
+
+Response:  We have added additional explanatory text.  The paragraph introducing the parameter analysis was re-worded to say:
+
+"Note that the input power per Fourier mode scales as $D^{-2}$, that is it will be lower given larger $D$.  This means that the input temporal PSD has a different shape due to relative spatial frequency as well as different power due both to the wind speed and diameter. The input noise PSD will also be lower for each mode, but by $D^{-1}$ since the signal to noise ratio goes as S/N $\propto \sqrt{D}$.  The balance betwen these inputs can be expected to affect the performance of the optimized controllers, resulting in variation in speckle lifetimes."
+
+The paragraph about r_0 now says:
+
+"{For the SI controller, improving seeing (larger $r_0$) reduces speckle lifetime.  As the turbulence power is reduced, the control system is better able to reject low temporal frequencies, resulting in lower speckle lifetimes.  As with $D$ and $\mathcal{V}$, the LP controller shows little variation in lifetimes vs. $r_0$.  Here again, the predictive controller whitens the noise to the same floor set by photon noise, which produces an output PSD of roughly the same shape resulting in similar speckle lifetimes.  The lifetime increases somewhat vs $r_0$ on the larger diameters as the turbulence power becomes relatively lower compared to photon noise, resulting in reduced effectiveness of the predictor such that more correlations remain in the output."
+
+----------------------------------------------
+
+Section 7
+Comment: This section is based on the supposition that "we have a technique for measuring the
+Legendre mode coefficients an." It is difficult to evaluate the usefulness of this discussion
+without understanding the prospects for making such measurements. Perhaps the authors could
+weigh in on how or whether the mode coefficients could be measured with current or future
+instruments.
+
+Response: We have added a brief introduction to AO PSF reconstruction, and provided an outline of the basic algorithm needed to perform reconstruction
+for high-contrast imaging.  The new text read:
+
+[TODO: add text once we're all happy with it]
+
+----------------------------------------------
+Section 8
+"A key assumption underlying the mathematics of the PSD analysis is that the speckle intensity
+is WSS"
+Comment: I suggest moving this discussion to the earlier section when the WSS argument was
+initially made, or summarizing it there, to help the audience understand the validity of the WSS
+argument when it is first introduced.
+
+Response: Addressed in comment above -- we added more discussion in section 3, and re-worded this paragraph to read:
+
+"A key assumption underlying the mathematics of the PSD analysis is that the speckle intensity is wide-sense stationary (WSS), which means that the mean is constant and that the autocorrelation does not depend on time.  As discussed above, this assumption implies that $r_0$ and the layer $\vec{\mathcal{V}}$ are constant such that the statistics of the AO control output process are WSS.  In the simulations presented these assumptions are true by construction, and so the comparison to our semi-analytic predictions is valid.  On-sky input turbulence parameters will vary, and so the process will not be WSS over long periods.  However, these variations occur over finite times.  For our results to be useful the time-scales of these variations would need to be long enough to estimate a PSD which meaningfully captures the intensity dynamics.   What this ultimately means is that we must consider the speckle lifetime as itself a time-variable parameter, but we can expect there to be a representative value over an observation that characterizes long exposure sensitivity."
+
+----------------------------------------------
+
+Section 9
+"We have shown that the speckle lifetime is an order of magnitude shorter than previous studies
+have found"
+Comment: Unless I'm mistaken, this point was not explicitly made in the body of the paper.
+
+Response: This point was not made explicity.  We added the following paragraph at the end of Section 5.4:
+
+"For comparison, the ``crossing-time'' speckle lifetime of \citet{2005SPIE.5903..170M} would be $\tau=0.3D/\mathcal{V} = 224$ ms for the turbulence averaged windspeed used in these calculations, with the caveat that the constant of propotionality is expected to vary with coronagraph. We find lifetimes much shorter than this, up to a factor of 10 shorter for the LP controller. Figures \ref{fig:lifetime_2Dcomp} and \ref{fig:lifetime_radprof} show that speckle lifetime has a strong dependence on control law, and varies with position in the image.  We investigate the $D/\mathcal{V}$ scaling next."
+----------------------------------------------
