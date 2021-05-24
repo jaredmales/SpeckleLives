@@ -104,7 +104,8 @@ than 10L/D for the infinitely bright, LP case?
 Response: To address this, we have added additional text at the end of Section 5.4:
 "The calculated and simulated lifetimes agree throughout most of the control region.  The noteworthy exception occurs in the LP roughly along a diagonal.  At wider separations the simulations predict lifetimes $\sim 50\%$ higher in a wedged shape region.  As with the differences in the phase dynamics discussed above, we attribute this to differences between the orthogonalized modal basis used in the simulations and the Fourier modes used in the calculations, and the resultant changes in the output of the controller coefficients and gain optimization."
 
-And to the caption of Figure 8 we added: "The large difference in median lifetime between simulation and calculation for the LP is due to the wedge shaped region where the simulation predicts higher lifetimes (see Figure \ref{fig:lifetime_2Dcomp}.  See text for discussion."
+And to the caption of Figure 8 we added: "The large difference in median lifetime between simulation and calculation for the
+LP on the bright star is due to the wedge shaped region where the simulation predicts higher lifetimes (see Figure 7, and text for discussion)"
 
 ----------------------------------------------
 Section 6
@@ -137,7 +138,7 @@ Response:  We have added additional explanatory text.  The paragraph introducing
 
 The paragraph about r_0 now says:
 
-"{For the SI controller, improving seeing (larger $r_0$) reduces speckle lifetime.  As the turbulence power is reduced, the control system is better able to reject low temporal frequencies, resulting in lower speckle lifetimes.  As with $D$ and $\mathcal{V}$, the LP controller shows little variation in lifetimes vs. $r_0$.  Here again, the predictive controller whitens the noise to the same floor set by photon noise, which produces an output PSD of roughly the same shape resulting in similar speckle lifetimes.  The lifetime increases somewhat vs $r_0$ on the larger diameters as the turbulence power becomes relatively lower compared to photon noise, resulting in reduced effectiveness of the predictor such that more correlations remain in the output."
+"For the SI controller, improving seeing (larger $r_0$) reduces speckle lifetime.  As the turbulence power is reduced, the control system is better able to reject low temporal frequencies, resulting in lower speckle lifetimes.  As with $D$ and $\mathcal{V}$, the LP controller shows little variation in lifetimes vs. $r_0$.  Here again, the predictive controller whitens the noise to the same floor set by photon noise, which produces an output PSD of roughly the same shape resulting in similar speckle lifetimes.  The lifetime increases somewhat vs $r_0$ on the larger diameters as the turbulence power becomes relatively lower compared to photon noise, resulting in reduced effectiveness of the predictor such that more correlations remain in the output."
 
 ----------------------------------------------
 
