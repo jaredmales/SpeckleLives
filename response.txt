@@ -180,3 +180,5 @@ Response: This point was not made explicity.  We added the following paragraph a
 
 Other changes:
 Abstract: For brevity deleted the sentence "The temporal correlation of speckles reduces sensitivity as they average much more slowly than photon noise."
+
+Notation: changed the Legendre polynomial index from n to \eta to avoid confusion with the spatial frequency index
