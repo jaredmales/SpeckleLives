@@ -177,3 +177,6 @@ Response: This point was not made explicity.  We added the following paragraph a
 
 "For comparison, the ``crossing-time'' speckle lifetime of \citet{2005SPIE.5903..170M} would be $\tau=0.3D/\mathcal{V} = 224$ ms for the turbulence averaged windspeed used in these calculations, with the caveat that the constant of propotionality is expected to vary with coronagraph. We find lifetimes much shorter than this, up to a factor of 10 shorter for the LP controller. Figures \ref{fig:lifetime_2Dcomp} and \ref{fig:lifetime_radprof} show that speckle lifetime has a strong dependence on control law, and varies with position in the image.  We investigate the $D/\mathcal{V}$ scaling next."
 ----------------------------------------------
+
+Other changes:
+Abstract: For brevity deleted the sentence "The temporal correlation of speckles reduces sensitivity as they average much more slowly than photon noise."
