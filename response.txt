@@ -85,7 +85,7 @@ Section 5
 "The perfect 1st order coronagraph was simulated."
 Comment: Please provide a citation here.
 
-Response: We ave droped "1st order" and added a citation.  Te sentence now reads:
+Response: We ave dropped "1st order" and added a citation.  Te sentence now reads:
 "The perfect coronagraph was simulated (Cavarroc et al. 2006)"
 
 ----------------------------------------------
@@ -222,9 +222,9 @@ Section 9
 have found"
 Comment: Unless I'm mistaken, this point was not explicitly made in the body of the paper.
 
-Response: This point was not made explicity.  We added the following paragraph at the end of Section 5.4:
+Response: This point was not made explicitly.  We added the following paragraph at the end of Section 5.4:
 
-"For comparison, the ``crossing-time'' speckle lifetime of \citet{2005SPIE.5903..170M} would be $\tau=0.3D/\mathcal{V} = 224$ ms for the turbulence averaged windspeed used in these calculations, with the caveat that the constant of propotionality is expected to vary with coronagraph. We find lifetimes much shorter than this, up to a factor of 10 shorter for the LP controller. Figures \ref{fig:lifetime_2Dcomp} and \ref{fig:lifetime_radprof} show that speckle lifetime has a strong dependence on control law, and varies with position in the image.  We investigate the $D/\mathcal{V}$ scaling next."
+"For comparison, the ``crossing-time'' speckle lifetime of \citet{2005SPIE.5903..170M} would be $\tau=0.3D/\mathcal{V} = 224$ ms for the turbulence averaged windspeed used in these calculations, with the caveat that the constant of proportionality is expected to vary with coronagraph. We find lifetimes much shorter than this, up to a factor of 10 shorter for the LP controller. Figures \ref{fig:lifetime_2Dcomp} and \ref{fig:lifetime_radprof} show that speckle lifetime has a strong dependence on control law, and varies with position in the image.  We investigate the $D/\mathcal{V}$ scaling next."
 ----------------------------------------------
 
 Other changes:
