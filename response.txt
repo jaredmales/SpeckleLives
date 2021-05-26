@@ -134,7 +134,7 @@ different aperture cases, but the takeaway point regarding the r0 trends is not 
 
 Response:  We have added additional explanatory text.  The paragraph introducing the parameter analysis was re-worded to say:
 
-"Note that the input power per Fourier mode scales as $D^{-2}$, that is it will be lower given larger $D$.  This means that the input temporal PSD has a different shape due to relative spatial frequency as well as different power due both to the wind speed and diameter. The input noise PSD will also be lower for each mode, but by $D^{-1}$ since the signal to noise ratio goes as S/N $\propto \sqrt{D}$.  The balance betwen these inputs can be expected to affect the performance of the optimized controllers, resulting in variation in speckle lifetimes."
+"Note that the input power per Fourier mode scales as $D^{-2}$, that is it will be lower given larger $D$.  This means that the input temporal PSD has a different shape due to relative spatial frequency as well as different power due both to the wind speed and diameter. The input noise PSD will also be lower for each mode.  The balance betwen these inputs can be expected to affect the performance of the optimized controllers, resulting in variation in speckle lifetimes."
 
 The paragraph about r_0 now says:
 
