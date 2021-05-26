@@ -16,7 +16,7 @@ a lack of discussion of how such a reconstruction could be accomplished. While i
 beyond the scope of this paper to present such a method in detail, the paper would be
 strengthened by some discussion of the prospects of making the relevant measurements.
 
-Response: We thank the referee for the careful review and insightful comments.  We have addressed each below.  In particular we have significantly expanded the discussion of post-processing to include an outline of a workable algorithm.
+Response: We thank the referee for the careful review and insightful comments.  We have addressed each below.  In particular we have significantly expanded the discussion of post-processing to include an outline of a workable algorithm.  All changes are in bold text in the attached pdf.
 
 ----------------------------------------------
 Introduction
@@ -150,9 +150,58 @@ weigh in on how or whether the mode coefficients could be measured with current 
 instruments.
 
 Response: We have added a brief introduction to AO PSF reconstruction, and provided an outline of the basic algorithm needed to perform reconstruction
-for high-contrast imaging.  The new text read:
+for high-contrast imaging.  The new text reads:
 
-[TODO: add text once we're all happy with it]
+The reconstruction of the post-AO PSF using AO system telemetry has been studied
+for some time, primarily focused on the long-exposure PSF, e.g. Veran et al. (1997)
+and see the recent review by Beltramo-Martin et al. (2020). PSF reconstruction in the
+context of high-contrast imaging is typically based on image data alone (Marois et al.
+2006; Lafrenière et al. 2007), however the potential for telemetry-based PSF estimation
+in high-contrast imaging has been recognized (Frazin 2013; Codona & Kenworthy 2013).
+Here we use our treatment of the intensity dynamics behind an AO-fed coronagraph
+to analyze the performance of PSF estimation and subtraction. We are particularly
+motivated by the use of WFS telemetry to improve on the sensitivity limit set by
+atmospheric speckle lifetimes, however this analysis could be applied to conventional
+post-processing such as the KLIP algorithm (Soummer et al. 2012).
+
+A closed-loop wavefront control system measures the coefficients of the controlled
+modes in the residual wavefront at each loop time step. The WFS produces mea-
+surements of the residual phase with modal coefficients ∆hpmn(t) which we assume are
+recorded. Additionally we assume that focal plane intensity is recorded with a detector
+reading out at the same rate as and synchronized to the WFS, such that measurements
+Imn (t) are recorded at each pixel. The measured focal plane intensity may include signal
+from a planet in addition to scattered starlight.
+
+At some later time we use the measured residual coefficients to reconstruct an estimate
+of the focal plane intensity due to scattered starlight alone. To begin, we reconstruct
+the residual phase based on Equation 28
+
+\Delta\Phi(\vec{q},t) = \frac{2\pi}{\lambda} \sum\limits_{mn} \left[ \Delta h_{mn}^{+}(t) M_{mn}^{+}(\vec{q}) + \Delta h_{mn}^{-}(t) M_{mn}^{-}(\vec{q})\right].
+
+We then propagate the residual phase to the focal plane
+
+\hat{I}(\vec{r},t) = G \left\{\mathcal{A}(\vec{q}) \mbox{e}^{i\Delta\Phi(\vec{q},t)} \right\}
+
+where A(~q) defines the pupil and G{·} is the system propagation operator, which could
+include information such as the effect of the coronagraph, non-common path aberrations
+(not sensed by the WFS which measures the ∆hpmn (t)), and Fresnel propagation. See
+Herscovici-Schiller et al. (2017) for an example of the construction of such a model.
+In the case of the perfect coronagraph and ideal optical system used in this work,
+the propagation operator reduces to Equation 29. The result of applying G{·} to the
+reconstructed wavefront is an estimated intensity time series at position ~rmn
+
+\hat{I}_{mn}(t) = \hat{I}(\vec{r}_{mn},t)
+
+In Section 3 we developed the expansion of the intensity time-series in terms of orthonormal Legen-
+dre polynomials Pη . For a segment of the reconstructed intensity of length T, we measure
+the coefficients of the Legendre polynomials
+
+\hat{a}_\eta = \int_{-1}^1 \hat{I}_{mn}\left(\frac{T}{2}\xi\right) P_\eta(\xi) d\xi. 
+
+We then subtract the first $N$ Legendre modes of the reconstructed time-series from the measured focal plane intensity time-series, giving the ``post-processed'' intensity
+
+I_{mn,pp}(t) = I_{mn}(t) - \sum_{\eta=0}^{\eta=N-1} \hat{a}_\eta P_\eta\left(\frac{2}{T}t\right). 
+
 
 ----------------------------------------------
 Section 8
@@ -182,3 +231,5 @@ Other changes:
 Abstract: For brevity deleted the sentence "The temporal correlation of speckles reduces sensitivity as they average much more slowly than photon noise."
 
 Notation: changed the Legendre polynomial index from n to \eta to avoid confusion with the spatial frequency index
+
+A few minor typos were corrected.
